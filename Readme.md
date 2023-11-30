@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
-* Студент: [Дмитрий Щеклеин](https://up.htmlacademy.ru/nodejs-2/5/user/160701).
-* Наставник: `Неизвестно`.
+* Студент: [Дмитрий Щеклеин](https://htmlacademy.ru/profile/shcheklein).
+* Наставник: [Евгений Наумов](https://htmlacademy.ru/profile/naumov_evg).
 
 ---
 
