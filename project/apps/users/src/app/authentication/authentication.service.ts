@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
@@ -52,6 +53,11 @@ export class AuthenticationService {
   }
 
   public async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    const existUser = this.blogUserRepository.findById(id);
+
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return existUser;
   }
 }
