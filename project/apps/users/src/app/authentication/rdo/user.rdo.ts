@@ -2,17 +2,17 @@ import { Expose } from 'class-transformer';
 
 export class UserRdo {
   @Expose()
-  public id: string;
+  public id!: string;
 
   @Expose()
-  public avatar: string;
+  public avatar!: string;
 
   @Expose()
-  public email: string;
+  public email!: string;
 
   @Expose()
-  public firstname: string;
+  public firstname!: string;
 
   @Expose()
-  public lastname: string;
+  public lastname!: string;
 }
