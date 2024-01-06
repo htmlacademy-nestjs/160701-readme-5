@@ -1,11 +1,11 @@
 # Пользователь
 @hostname = http://localhost
 @port = 3000
-@prefix = api
+@prefix = api/v1
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = auth
 @contentType = application/json
-@USER_ID = cb3c3477-199c-4440-a5a9-2c3cd140aa28
+@USER_ID = df191215-1f3c-407d-96b2-390bdfae1961
 
 
 
