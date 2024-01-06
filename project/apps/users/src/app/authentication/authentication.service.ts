@@ -25,6 +25,7 @@ export class AuthenticationService {
       firstname,
       lastname,
       role: UserRole.User,
+      avatar: '',
       passwordHash: '',
     };
 
