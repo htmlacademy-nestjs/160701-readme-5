@@ -14,10 +14,10 @@ POST {{host}}/{{parentPath}}/register HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "email": "torans10@overlook.net",
-  "firstName": "Jack",
-  "password": "shining",
-  "type": "default"
+  "email": "2@2.net",
+  "firstName": "Jay",
+  "lastname": "Cutler",
+  "password": "shining"
 }
 
 ###
@@ -28,8 +28,8 @@ POST {{host}}/{{parentPath}}/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "email": "1@1.ru",
-  "password": "qwerty"
+  "email": "2@2.net",
+  "password": "shining"
 }
 
 ###
