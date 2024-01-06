@@ -1,0 +1,40 @@
+# Пользователь
+@hostname = http://localhost
+@port = 3000
+@prefix = api
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = auth
+@contentType = application/json
+@USER_ID = cb3c3477-199c-4440-a5a9-2c3cd140aa28
+
+
+
+### Регистрация пользователя
+POST {{host}}/{{parentPath}}/register HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "torans10@overlook.net",
+  "firstName": "Jack",
+  "password": "shining",
+  "type": "default"
+}
+
+###
+
+## Авторизовать пользователя
+
+POST {{host}}/{{parentPath}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "1@1.ru",
+  "password": "qwerty"
+}
+
+###
+## Проверка пользователя
+
+GET {{host}}/{{parentPath}}/{{USER_ID}} HTTP/1.1
+
+###
