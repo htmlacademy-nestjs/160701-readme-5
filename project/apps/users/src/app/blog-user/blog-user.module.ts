@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
 
-@Module({})
+@Module({
+  providers: [BlogUserModule],
+  exports: [BlogUserModule],
+})
 export class BlogUserModule {}
