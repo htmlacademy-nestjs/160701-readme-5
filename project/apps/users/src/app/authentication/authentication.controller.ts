@@ -28,6 +28,6 @@ export class AuthenticationController {
   public async show(@Param('id') id: string) {
     const existUser = await this.authService.getUser(id);
 
-    return fillDto(UserRdo, existUser?.toPOJO() || {}); //TODO: ts error
+    return fillDto(UserRdo, existUser.toPOJO());
   }
 }
