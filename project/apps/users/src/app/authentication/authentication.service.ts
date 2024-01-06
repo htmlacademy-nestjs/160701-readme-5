@@ -38,7 +38,7 @@ export class AuthenticationService {
 
     const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
 
-    return this.blogUserRepository.save(userEntity);
+    return await this.blogUserRepository.save(userEntity);
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -53,7 +53,7 @@ export class AuthenticationService {
   }
 
   public async getUser(id: string) {
-    const existUser = this.blogUserRepository.findById(id);
+    const existUser = await this.blogUserRepository.findById(id);
 
     if (!existUser) {
       throw new NotFoundException(`User with id ${id} not found`);
