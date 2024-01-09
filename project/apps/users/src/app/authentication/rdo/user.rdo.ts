@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '@project/libs/shared/app/types';
 import { Expose } from 'class-transformer';
 
-export class UserRdo {
+export class UserRdo implements Omit<User, 'role'> {
   @Expose()
   @ApiProperty({
     description: 'The uniq user ID',
@@ -36,4 +37,28 @@ export class UserRdo {
     example: 'Keks',
   })
   public lastname!: string;
+
+  @Expose()
+  @ApiProperty({
+    type: Date,
+    description: 'User create date',
+    example: '2024-01-09T14:55:34.697Z',
+  })
+  public createdAt!: Date;
+
+  @Expose()
+  @ApiProperty({
+    type: Number,
+    description: 'User publications count',
+    example: '10',
+  })
+  public publicationsCount!: number;
+
+  @Expose()
+  @ApiProperty({
+    type: Number,
+    description: 'User subscribers count',
+    example: '10',
+  })
+  public subscribersCount!: number;
 }

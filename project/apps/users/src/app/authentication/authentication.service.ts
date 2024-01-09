@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserRole } from '@project/libs/shared/app/types';
+import { AuthUser, UserRole } from '@project/libs/shared/app/types';
 import {
   AUTH_USER_EXISTS,
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
@@ -21,13 +21,16 @@ export class AuthenticationService {
   public async register(dto: CreateUserDto) {
     const { email, firstname, lastname, password } = dto;
 
-    const blogUser = {
+    const blogUser: AuthUser = {
       email,
       firstname,
       lastname,
       role: UserRole.User,
       avatar: '',
       passwordHash: '',
+      createdAt: new Date(),
+      publicationsCount: 0,
+      subscribersCount: 0,
     };
 
     const existUser = await this.blogUserRepository.findByEmail(email);

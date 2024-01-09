@@ -7,4 +7,7 @@ export interface User {
   lastname: string;
   avatar: string;
   role: UserRole;
+  createdAt: Date;
+  publicationsCount: number;
+  subscribersCount: number;
 }
