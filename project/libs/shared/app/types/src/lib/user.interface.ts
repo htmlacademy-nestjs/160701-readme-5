@@ -5,7 +5,7 @@ export interface User {
   email: string;
   firstname: string;
   lastname: string;
-  avatar: string;
+  avatar?: string;
   role: UserRole;
   createdAt: Date;
   publicationsCount: number;
