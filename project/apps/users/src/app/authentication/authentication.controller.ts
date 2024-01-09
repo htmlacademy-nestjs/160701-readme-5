@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -34,6 +33,11 @@ export class AuthenticationController {
     type: ApiResponseError,
     status: HttpStatus.CONFLICT,
     description: 'User with this email already exists',
+  })
+  @ApiResponse({
+    type: ApiResponseError,
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad request data',
   })
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
