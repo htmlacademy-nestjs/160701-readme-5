@@ -52,7 +52,7 @@ export class AuthenticationService {
     return existUser;
   }
 
-  public async getUser(id: string) {
+  public async getUserById(id: string) {
     const existUser = await this.blogUserRepository.findById(id);
 
     if (!existUser) {
