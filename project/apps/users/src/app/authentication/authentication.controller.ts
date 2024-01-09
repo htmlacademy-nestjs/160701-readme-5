@@ -22,6 +22,7 @@ export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 
   @ApiResponse({
+    type: UserRdo,
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.',
   })
