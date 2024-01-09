@@ -18,6 +18,7 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
+import { ApiResponseError } from '@project/shared/core';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -30,6 +31,7 @@ export class AuthenticationController {
     description: 'The new user has been successfully created.',
   })
   @ApiResponse({
+    type: ApiResponseError,
     status: HttpStatus.CONFLICT,
     description: 'User with this email already exists',
   })
@@ -46,6 +48,7 @@ export class AuthenticationController {
     description: 'User has been successfully logged.',
   })
   @ApiResponse({
+    type: ApiResponseError,
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
   })
@@ -63,7 +66,7 @@ export class AuthenticationController {
     description: 'User found',
   })
   @ApiResponse({
-    type: NotFoundException, //TODO: не отображает структуру в swagger
+    type: ApiResponseError,
     status: HttpStatus.NOT_FOUND,
     description: 'User not found',
   })
@@ -80,10 +83,12 @@ export class AuthenticationController {
     description: 'Password changed successfully',
   })
   @ApiResponse({
+    type: ApiResponseError,
     status: HttpStatus.NOT_FOUND,
     description: 'User not found',
   })
   @ApiResponse({
+    type: ApiResponseError,
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request data',
   })
