@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   HttpStatus,
   NotFoundException,
   Param,
@@ -15,7 +16,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('authentication')
+@ApiTags('auth')
 @Controller('auth')
 export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
@@ -23,6 +24,10 @@ export class AuthenticationController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'User with this email already exists',
   })
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
@@ -33,7 +38,7 @@ export class AuthenticationController {
 
   @ApiResponse({
     type: LoggedUserRdo,
-    status: HttpStatus.CREATED,
+    status: HttpStatus.OK,
     description: 'User has been successfully logged.',
   })
   @ApiResponse({
@@ -41,6 +46,7 @@ export class AuthenticationController {
     description: 'Password or Login is wrong.',
   })
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
 
