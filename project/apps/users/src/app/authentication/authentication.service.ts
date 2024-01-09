@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -10,9 +11,11 @@ import { AuthUser, UserRole } from '@project/libs/shared/app/types';
 import {
   AUTH_USER_EXISTS,
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
+  OLD_PASSWORD_NOT_CORRECT,
 } from './authentication.constants';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -61,6 +64,20 @@ export class AuthenticationService {
     if (!existUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
+    return existUser;
+  }
+
+  public async changePassword(dto: ChangePasswordDto) {
+    const { id, oldPassword, newPassword } = dto;
+    const existUser = await this.getUserById(id);
+    const isOldPasswordCorrect = await existUser.comparePassword(oldPassword);
+
+    if (!isOldPasswordCorrect) {
+      throw new BadRequestException(OLD_PASSWORD_NOT_CORRECT);
+    }
+
+    await existUser.setPassword(newPassword);
+
     return existUser;
   }
 }

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   NotFoundException,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
@@ -15,6 +16,8 @@ import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { ChangePasswordRdo } from './rdo/change-password.rdo';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -69,5 +72,27 @@ export class AuthenticationController {
     const existUser = await this.authService.getUserById(id);
 
     return fillDto(UserRdo, existUser.toPOJO());
+  }
+
+  @ApiResponse({
+    type: ChangePasswordRdo,
+    status: HttpStatus.OK,
+    description: 'Password changed successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad request data',
+  })
+  @Patch('change-password')
+  public async changePassword(@Body() dto: ChangePasswordDto) {
+    await this.authService.changePassword(dto);
+
+    return fillDto(ChangePasswordRdo, {
+      message: 'Password changed successfully',
+    });
   }
 }

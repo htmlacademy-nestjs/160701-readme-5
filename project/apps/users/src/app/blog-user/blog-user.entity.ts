@@ -55,4 +55,14 @@ export class BlogUserEntity implements AuthUser, Entity<string> {
   public async comparePassword(password: string) {
     return compare(password, this.passwordHash);
   }
+
+  public async changePassword(oldPassword: string, newPassword: string) {
+    const isPasswordEqual = await this.comparePassword(oldPassword);
+
+    if (isPasswordEqual) {
+      this.setPassword(newPassword);
+    }
+
+    return isPasswordEqual;
+  }
 }

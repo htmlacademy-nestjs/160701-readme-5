@@ -1,11 +1,11 @@
 # Пользователь
 @hostname = http://localhost
-@port = 3000
+@port = 3333
 @prefix = api/v1
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = auth
 @contentType = application/json
-@USER_ID = df191215-1f3c-407d-96b2-390bdfae1961
+@USER_ID = 1c3e0eae-fad2-4beb-9bd8-8baac7aabfff
 
 
 
@@ -36,5 +36,17 @@ Content-Type: {{contentType}}
 ## Проверка пользователя
 
 GET {{host}}/{{parentPath}}/{{USER_ID}} HTTP/1.1
+
+
+###
+## Изменение пароля пользователя
+PATCH {{host}}/{{parentPath}}/change-password HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "id": "{{USER_ID}}",
+  "oldPassword": "shining3",
+  "newPassword": "shining2"
+}
 
 ###
