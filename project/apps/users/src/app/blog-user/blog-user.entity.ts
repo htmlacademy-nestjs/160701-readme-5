@@ -43,6 +43,7 @@ export class BlogUserEntity implements AuthUser, Entity<string> {
     this.createdAt = data.createdAt;
     this.publicationsCount = data.publicationsCount;
     this.subscribersCount = data.subscribersCount;
+    this.passwordHash = data.passwordHash;
   }
 
   public async setPassword(password: string): Promise<BlogUserEntity> {
