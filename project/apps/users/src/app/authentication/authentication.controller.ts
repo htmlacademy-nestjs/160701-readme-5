@@ -10,14 +10,13 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillDto } from '@project/shared/helpers';
+import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
-import { ApiResponseError } from '@project/shared/core';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -30,14 +29,17 @@ export class AuthenticationController {
     description: 'The new user has been successfully created.',
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.CONFLICT,
     description: 'User with this email already exists',
+    schema: generateSchemeApiError(
+      'User with this email already exists',
+      HttpStatus.CONFLICT
+    ),
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request data',
+    schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
@@ -52,9 +54,12 @@ export class AuthenticationController {
     description: 'User has been successfully logged.',
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
+    schema: generateSchemeApiError(
+      'Password or Login is wrong.',
+      HttpStatus.UNAUTHORIZED
+    ),
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -70,9 +75,8 @@ export class AuthenticationController {
     description: 'User found',
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.NOT_FOUND,
-    description: 'User not found',
+    schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
   @Get(':id')
   public async show(@Param('id') id: string) {
@@ -87,14 +91,14 @@ export class AuthenticationController {
     description: 'Password changed successfully',
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.NOT_FOUND,
     description: 'User not found',
+    schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
   @ApiResponse({
-    type: ApiResponseError,
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request data',
+    schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
   @Patch('change-password')
   public async changePassword(@Body() dto: ChangePasswordDto) {
