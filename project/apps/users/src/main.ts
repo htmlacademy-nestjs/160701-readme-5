@@ -19,7 +19,9 @@ async function bootstrap() {
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('spec', app, document);
+  SwaggerModule.setup('spec', app, document, {
+    customSiteTitle: '[Users] Swagger UI',
+  });
 
   const port = process.env.PORT || 3333;
   await app.listen(port);

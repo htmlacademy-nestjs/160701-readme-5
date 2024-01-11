@@ -20,7 +20,9 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('spec', app, document);
+  SwaggerModule.setup('spec', app, document, {
+    customSiteTitle: '[Blog] Swagger UI',
+  });
 
   const port = process.env.PORT || 4444;
   await app.listen(port);
