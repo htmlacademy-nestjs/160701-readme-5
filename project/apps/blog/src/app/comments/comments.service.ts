@@ -22,6 +22,10 @@ export class CommentsService {
     return this.commentsRepository.save(commentEntity);
   }
 
+  public async findByPostId(id: string) {
+    return this.commentsRepository.findByPostId(id);
+  }
+
   public async findAll() {
     return this.commentsRepository.findAll();
   }
@@ -36,14 +40,25 @@ export class CommentsService {
     return existComment;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  public async update(id: string, updateCommentDto: UpdateCommentDto) {
+    const existComment = await this.commentsRepository.findById(id);
+
+    if (!existComment) {
+      throw new NotFoundException(`Comment with id ${id} not found`);
+    }
+    const newCommentEntity = new CommentEntity({
+      ...existComment.toPOJO(),
+      message: updateCommentDto.message,
+    });
+    const newComment = await this.commentsRepository.update(id, newCommentEntity);
+
+    return newComment;
   }
 
   public async remove(id: string) {
     await this.findOne(id);
     await this.commentsRepository.deleteById(id);
-    
+
     return `This action removes a #${id} comment`;
   }
 }
