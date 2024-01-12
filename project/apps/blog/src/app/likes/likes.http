@@ -1,0 +1,22 @@
+#Лайки
+@hostname = http://localhost
+@port = 4444
+@prefix = api/v1
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = likes
+@contentType = application/json
+@POST_ID = 1c3e0eae-fad2-4beb-9bd8-8baac7aabfff_3
+@LIKE_ID = 6b710e8c-640d-4eaa-a933-c68e274b4d53
+@USER_ID = 2a83efd4-07da-42c5-ad2f-339dcb1c3352
+
+### Создать лайк
+POST {{host}}/{{parentPath}}/create/{{POST_ID}}?userId={{USER_ID}} HTTP/1.1
+
+### Удалить лайк
+DELETE  {{host}}/{{parentPath}}/delete/{{POST_ID}}?userId={{USER_ID}} HTTP/1.1
+
+### Получить лайки к посту
+GET {{host}}/{{parentPath}}/{{POST_ID}} HTTP/1.1
+
+### Получить все лайки
+GET {{host}}/{{parentPath}} HTTP/1.1
