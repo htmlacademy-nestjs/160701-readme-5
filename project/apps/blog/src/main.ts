@@ -17,9 +17,15 @@ async function bootstrap() {
     .setTitle('The «Blog» service')
     .setDescription('«Blog» service API')
     .setVersion('1.0')
+    .addTag('posts', 'Публикаций')
+    .addTag('likes', 'Лайки')
+    .addTag('comments', 'Комментарии')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  const pathsToRemove = ['/api/v1'];
+  pathsToRemove.forEach((path) => delete document.paths[path]);
+
   SwaggerModule.setup('spec', app, document, {
     customSiteTitle: '[Blog] Swagger UI',
   });
