@@ -9,7 +9,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
 import { LikeRdo } from './rdo/like.rdo';
 
@@ -41,6 +41,12 @@ export class LikesController {
     description: 'Like exists',
     status: HttpStatus.CONFLICT,
   })
+  @ApiParam({
+    name: 'postId',
+    required: true,
+    description: 'Should be an id of a post that exists in the database',
+    type: String,
+  })
   @Post('/create/:postId')
   public async create(
     @Param('postId') postId: string,
@@ -58,6 +64,12 @@ export class LikesController {
     description: 'Like deleted successfully',
     status: HttpStatus.OK,
   })
+  @ApiParam({
+    name: 'postId',
+    required: true,
+    description: 'Should be an id of a post that exists in the database',
+    type: String,
+  })
   @Delete('/delete/:postId')
   public async delete(
     @Param('postId') postId: string,
@@ -74,6 +86,12 @@ export class LikesController {
     type: LikeRdo,
     description: 'Get all likes by postId',
     status: HttpStatus.OK,
+  })
+  @ApiParam({
+    name: 'postId',
+    required: true,
+    description: 'Should be an id of a post that exists in the database',
+    type: String,
   })
   @Get(':postId')
   public async getCount(@Param('postId') postId: string) {
