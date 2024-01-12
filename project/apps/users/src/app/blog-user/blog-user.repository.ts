@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class BlogUserRepository extends BaseMemoryRepository<BlogUserEntity> {
-  public findByEmail(email: string) {
-    const entities = Array.from(this.entities.values());
+  public async findByEmail(email: string) {
+    const entities = await this.findAll();
     const user = entities.find((entity) => entity.email === email);
 
     return Promise.resolve(user);
