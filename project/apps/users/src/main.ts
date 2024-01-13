@@ -5,22 +5,25 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import { attachSwagger } from '@project/shared/helpers';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const config = new DocumentBuilder()
-    .setTitle('The «Users» service')
-    .setDescription('Users service API')
-    .setVersion('1.0')
-    .build();
-
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('spec', app, document, {
-    customSiteTitle: '[Users] Swagger UI',
+
+  attachSwagger({
+    app,
+    DocumentBuilder: new DocumentBuilder()
+      .setTitle('The «Users» service')
+      .setDescription('Users service API')
+      .setVersion('1.0')
+      .addTag('auth', 'Авторизация и Регистрация'),
+    swaggerCustomOptions: {
+      customSiteTitle: '[Users] Swagger UI',
+    },
   });
 
   const port = process.env.PORT || 3333;
