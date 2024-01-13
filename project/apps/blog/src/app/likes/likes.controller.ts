@@ -9,7 +9,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
 import { LikeRdo } from './rdo/like.rdo';
 
@@ -23,6 +23,10 @@ export class LikesController {
     type: LikeRdo,
     description: 'Get all likes',
     status: HttpStatus.OK,
+  })
+  @ApiOperation({
+    summary: 'Получить все лайки',
+    description: 'Get all likes',
   })
   @Get('/')
   public async getAll() {
@@ -47,6 +51,10 @@ export class LikesController {
     description: 'Should be an id of a post that exists in the database',
     type: String,
   })
+  @ApiOperation({
+    summary: 'Создать лайк',
+    description: 'Create like',
+  })
   @Post('/create/:postId')
   public async create(
     @Param('postId') postId: string,
@@ -70,6 +78,10 @@ export class LikesController {
     description: 'Should be an id of a post that exists in the database',
     type: String,
   })
+  @ApiOperation({
+    summary: 'Удалить лайк',
+    description: 'Delete like',
+  })
   @Delete('/delete/:postId')
   public async delete(
     @Param('postId') postId: string,
@@ -92,6 +104,10 @@ export class LikesController {
     required: true,
     description: 'Should be an id of a post that exists in the database',
     type: String,
+  })
+  @ApiOperation({
+    summary: 'Все лайки для определённого поста',
+    description: 'Get all likes for post',
   })
   @Get(':postId')
   public async getCount(@Param('postId') postId: string) {

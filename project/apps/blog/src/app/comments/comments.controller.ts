@@ -12,7 +12,7 @@ import {
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
 import { CommentRdo } from './rdo/comment.rdo';
 
@@ -22,21 +22,13 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @ApiResponse({
-    type: CommentRdo,
-    status: HttpStatus.CREATED,
-    description: 'Comment create successfully',
-  })
-  @Post()
-  public async create(@Body() createCommentDto: CreateCommentDto) {
-    const newComment = await this.commentsService.create(createCommentDto);
-
-    return fillDto(CommentRdo, newComment.toPOJO());
-  }
-
-  @ApiResponse({
     isArray: true,
     type: CommentRdo,
     status: HttpStatus.OK,
+    description: 'Get all comments',
+  })
+  @ApiOperation({
+    summary: 'Получить все комментарии',
     description: 'Get all comments',
   })
   @Get()
@@ -51,6 +43,22 @@ export class CommentsController {
 
   @ApiResponse({
     type: CommentRdo,
+    status: HttpStatus.CREATED,
+    description: 'Comment create successfully',
+  })
+  @ApiOperation({
+    summary: 'Создать комментарий',
+    description: 'Create comment',
+  })
+  @Post()
+  public async create(@Body() createCommentDto: CreateCommentDto) {
+    const newComment = await this.commentsService.create(createCommentDto);
+
+    return fillDto(CommentRdo, newComment.toPOJO());
+  }
+
+  @ApiResponse({
+    type: CommentRdo,
     status: HttpStatus.OK,
     description: 'Find comment by Id',
   })
@@ -59,9 +67,13 @@ export class CommentsController {
     description: 'Comment not found',
     schema: generateSchemeApiError('Comment not found', HttpStatus.NOT_FOUND),
   })
-  @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    const existComment = await this.commentsService.findOne(id);
+  @ApiOperation({
+    summary: 'Получить комментарий по id',
+    description: 'Find comment by Id',
+  })
+  @Get(':commentId')
+  public async findOne(@Param('commentId') commentId: string) {
+    const existComment = await this.commentsService.findOne(commentId);
 
     return fillDto(CommentRdo, existComment.toPOJO());
   }
@@ -72,9 +84,13 @@ export class CommentsController {
     status: HttpStatus.OK,
     description: 'Find comments for Post',
   })
-  @Get('/post/:id')
-  public async findByPostId(@Param('id') id: string) {
-    const existComments = await this.commentsService.findByPostId(id);
+  @ApiOperation({
+    summary: 'Получить все комментарии к посту по id',
+    description: 'Find all comments by postId',
+  })
+  @Get('/post/:postId')
+  public async findByPostId(@Param('postId') postId: string) {
+    const existComments = await this.commentsService.findByPostId(postId);
 
     return fillDto(
       CommentRdo,
@@ -97,13 +113,17 @@ export class CommentsController {
     description: 'Bad request data',
     schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
-  @Patch(':id')
+  @ApiOperation({
+    summary: 'Изменить комментарий',
+    description: 'Fix comment by commentId',
+  })
+  @Patch(':commentId')
   public async update(
-    @Param('id') id: string,
+    @Param('commentId') commentId: string,
     @Body() updateCommentDto: UpdateCommentDto
   ) {
     const updatedComment = await this.commentsService.update(
-      id,
+      commentId,
       updateCommentDto
     );
 
@@ -119,8 +139,12 @@ export class CommentsController {
     description: 'Comment not found',
     schema: generateSchemeApiError('Comment not found', HttpStatus.NOT_FOUND),
   })
-  @Delete(':id')
-  public async remove(@Param('id') id: string) {
-    return this.commentsService.remove(id);
+  @ApiOperation({
+    summary: 'Удалить комментарий',
+    description: 'Remove comment',
+  })
+  @Delete(':commentId')
+  public async remove(@Param('commentId') commentId: string) {
+    return this.commentsService.remove(commentId);
   }
 }
