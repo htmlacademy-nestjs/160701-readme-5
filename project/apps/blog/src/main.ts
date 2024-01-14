@@ -21,10 +21,10 @@ async function bootstrap() {
       .setTitle('The «Blog» service')
       .setDescription('«Blog» service API')
       .setVersion('1.0')
-      .addTag('posts', 'Публикаций')
+      .addTag('posts', 'Публикации')
+      .addTag('content', 'Контент публикаций')
       .addTag('likes', 'Лайки')
       .addTag('comments', 'Комментарии'),
-    pathsToRemove: ['/api/v1'],
     swaggerCustomOptions: {
       customSiteTitle: '[Blog] Swagger UI',
     },
