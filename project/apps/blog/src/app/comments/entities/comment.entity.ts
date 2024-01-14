@@ -2,7 +2,7 @@ import { Entity } from '@project/shared/core';
 import { Comment } from '@project/libs/shared/app/types';
 
 export class CommentEntity implements Comment, Entity<string> {
-  public id?: string | undefined;
+  public id?: string;
   public createdAt!: Date;
   public message!: string;
   public postId!: string;
