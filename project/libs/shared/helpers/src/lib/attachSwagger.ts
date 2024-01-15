@@ -10,6 +10,7 @@ interface attachSwagger {
   DocumentBuilder: DocumentBuilder;
   pathsToRemove?: string[];
   swaggerCustomOptions?: SwaggerCustomOptions;
+  documentOptions: any;
 }
 
 export const attachSwagger = ({
@@ -17,10 +18,11 @@ export const attachSwagger = ({
   DocumentBuilder,
   pathsToRemove = [],
   swaggerCustomOptions,
+  documentOptions,
 }: attachSwagger) => {
   const config = DocumentBuilder.build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, documentOptions);
 
   pathsToRemove.forEach((path) => delete document.paths[path]);
 
