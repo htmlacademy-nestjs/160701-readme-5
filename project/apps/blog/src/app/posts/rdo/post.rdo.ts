@@ -4,6 +4,7 @@ import {
   PostContent,
   PostStatus,
   PostType,
+  RefPostContentArray,
 } from '@project/libs/shared/app/types';
 import { Expose } from 'class-transformer';
 
@@ -73,4 +74,11 @@ export class PostRdo implements Post {
     example: ['#hash'],
   })
   public tags?: string[];
+
+  @Expose()
+  @ApiProperty({
+    description: 'Post content by type',
+    oneOf: RefPostContentArray,
+  })
+  public content!: PostContent;
 }

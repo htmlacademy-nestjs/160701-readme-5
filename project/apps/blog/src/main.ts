@@ -9,6 +9,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { attachSwagger } from '@project/shared/helpers';
 import { DocumentBuilder } from '@nestjs/swagger';
+import {
+  AllOptionPostContentArray,
+  AllPostContentArray,
+} from '@project/libs/shared/app/types';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,11 +26,13 @@ async function bootstrap() {
       .setDescription('«Blog» service API')
       .setVersion('1.0')
       .addTag('posts', 'Публикации')
-      .addTag('content', 'Контент публикаций')
       .addTag('likes', 'Лайки')
       .addTag('comments', 'Комментарии'),
     swaggerCustomOptions: {
       customSiteTitle: '[Blog] Swagger UI',
+    },
+    documentOptions: {
+      extraModels: [...AllPostContentArray, ...AllOptionPostContentArray],
     },
   });
 

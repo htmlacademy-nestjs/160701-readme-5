@@ -1,4 +1,9 @@
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  PostContent,
+  PostType,
+  RefPostContentArray,
+} from '@project/libs/shared/app/types';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -8,8 +13,21 @@ export class CreatePostDto {
   public author!: string;
 
   @ApiProperty({
+    enum: PostType,
+    description: 'Post type',
+    example: PostType.Video,
+  })
+  public type!: PostType;
+
+  @ApiProperty({
     description: 'Post hash tags',
     example: ['#hash'],
   })
   public tags!: string[];
+
+  @ApiProperty({
+    description: 'Post content by type',
+    oneOf: RefPostContentArray,
+  })
+  public content!: PostContent;
 }
