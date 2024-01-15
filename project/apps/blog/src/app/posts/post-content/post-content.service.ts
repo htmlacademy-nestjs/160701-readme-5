@@ -1,15 +1,16 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PostContent, PostType } from '@project/libs/shared/app/types';
-
 import { PostContentEntityFactory } from './post-content-entity.factory';
 import { PostContentRepositoryFactory } from './post-content-repository.factory';
-import { UnionAllContentEntity } from '../entities/content';
-import { UnionAllContentRepository } from '../repository/content';
+import { BasePostContentEntity } from '../entities/content';
+import { Repository } from '@project/shared/core';
 
 @Injectable()
 export class PostContentService {
-  private readonly repositories: Map<PostType, UnionAllContentRepository> =
-    new Map();
+  private readonly repositories: Map<
+    PostType,
+    Repository<BasePostContentEntity>
+  > = new Map();
 
   constructor(
     private readonly postContentRepositoryFactory: PostContentRepositoryFactory,
@@ -29,14 +30,14 @@ export class PostContentService {
   public async save(
     type: PostType,
     content: PostContent
-  ): Promise<UnionAllContentEntity | undefined> {
-    const entity = await this.postContentEntityFactory.create(type, content);
+  ): Promise<BasePostContentEntity | undefined> {
+    const entity = this.postContentEntityFactory.create(type, content);
 
     if (!entity) {
       throw new ConflictException('Post content can not created');
     }
 
-    return this.getRepository(type)?.save(entity as any); //TODO: remove any
+    return this.getRepository(type)?.save(entity);
   }
 
   public async findById(type: PostType, id: string) {
@@ -48,7 +49,7 @@ export class PostContentService {
   public async update(type: PostType, id: string, content: PostContent) {
     const entity = await this.postContentEntityFactory.create(type, content);
 
-    return this.getRepository(type)?.update(id, entity as any); //TODO: remove any
+    return this.getRepository(type)?.update(id, entity);
   }
 
   public async deleteById(type: PostType, id: string) {

@@ -6,12 +6,13 @@ import {
   PhotoPostRepository,
   QuotePostRepository,
   TextPostRepository,
-  UnionAllContentRepository,
   VideoPostRepository,
 } from '../repository/content';
+import { Repository } from '@project/shared/core';
+import { BasePostContentEntity } from '../entities/content';
 
 interface PostContentRepository {
-  create(type: PostType): UnionAllContentRepository;
+  create(type: PostType): Repository<BasePostContentEntity>;
 }
 
 @Injectable()
