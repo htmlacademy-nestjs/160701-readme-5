@@ -62,8 +62,8 @@ export class PostRdo implements Post {
   @ApiProperty({
     enum: PostStatus,
     description: 'This post is repost',
-    example: PostStatus.Public,
-    default: PostStatus.Draft,
+    example: PostStatus.Draft,
+    default: PostStatus.Public,
   })
   public status!: PostStatus;
 

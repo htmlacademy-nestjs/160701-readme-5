@@ -25,7 +25,7 @@ export class PostsService {
       contentId,
       createdAt: new Date(),
       postedAt: new Date(),
-      status: PostStatus.Draft,
+      status: PostStatus.Public,
       author: dto.author,
       repost: false,
       tags: dto.tags,
