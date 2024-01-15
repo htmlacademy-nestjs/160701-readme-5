@@ -1,9 +1,15 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostRepository } from './repository/post.repository';
 import { PostContentService } from './post-content/post-content.service';
 import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
 import { PostEntity } from './entities/post.entity';
-import { AllCreateDto } from './dto/create/content';
+
+import { CreatePostDto } from './dto/create/create-post.dto';
+import { UpdatePostDto } from './dto/update/update-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -11,9 +17,9 @@ export class PostsService {
     private readonly postRepository: PostRepository,
     private readonly basePostContentService: PostContentService
   ) {}
-  public async create(postType: PostType, dto: AllCreateDto) {
+  public async create(dto: CreatePostDto) {
     const contentId = (
-      await this.basePostContentService.save(postType, dto.content)
+      await this.basePostContentService.save(dto.type, dto.content)
     )?.id;
 
     if (!contentId) {
@@ -21,7 +27,7 @@ export class PostsService {
     }
 
     const post: Post = {
-      type: postType,
+      type: dto.type,
       contentId,
       createdAt: new Date(),
       postedAt: new Date(),
@@ -31,7 +37,7 @@ export class PostsService {
       tags: dto.tags,
     };
     const contentEntity = await this.basePostContentService.findById(
-      postType,
+      dto.type,
       contentId
     );
     const postEntity = new PostEntity(post);
@@ -58,16 +64,25 @@ export class PostsService {
   }
 
   public async findOne(id: string) {
-    const post = await this.postRepository.findById(id);
+    const existEntity = await this.postRepository.findById(id);
 
-    return post;
+    if (!existEntity) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+
+    return existEntity;
   }
 
-  // public async update(id: string, updatePostDto: UpdatePostDto) {
-  //   const updatedPost = await this.postRepository.update(id, updatePostDto);
+  public async update(id: string, updatePostDto: UpdatePostDto) {
+    const existEntity = await this.postRepository.findById(id);
 
-  //   return updatedPost;
-  // }
+    if (!existEntity) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+    const updatedEntity = await this.postRepository.update(id, existEntity);
+
+    return updatedEntity;
+  }
 
   public async remove(id: string) {
     return this.postRepository.deleteById(id);
