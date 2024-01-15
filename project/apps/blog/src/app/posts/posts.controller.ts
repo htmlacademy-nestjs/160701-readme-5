@@ -9,35 +9,14 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDto } from './dto/create/create-post.dto';
-import { UpdatePostDto } from './dto/update/update-post.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
-import { PostRdo } from './rdo/post.rdo';
-import { PostType } from '@project/libs/shared/app/types';
-import { CreateVideoPostDto } from './dto/create/create-video-post.dto';
 import { PostTypesRdo } from './rdo/post-types.rdo';
-import { VideoPostRdo } from './rdo/video-post.rdo';
 
 @ApiTags('posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
-
-  @ApiResponse({
-    type: PostRdo,
-    status: HttpStatus.CREATED,
-    description: 'Post create successfully',
-  })
-  @ApiOperation({
-    summary: 'Создать пост с видео',
-  })
-  @Post(`/${PostType.Video}`)
-  public async createVideo(@Body() createPostDto: CreateVideoPostDto) {
-    const post = await this.postsService.create(PostType.Video, createPostDto);
-
-    return fillDto(VideoPostRdo, post.toPOJO());
-  }
 
   @ApiOperation({
     summary: 'Получить все посты',

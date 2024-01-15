@@ -1,11 +1,9 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create/create-post.dto';
-import { UpdatePostDto } from './dto/update/update-post.dto';
 import { PostRepository } from './repository/post.repository';
 import { PostContentService } from './post-content/post-content.service';
 import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
 import { PostEntity } from './entities/post.entity';
-import { CreateVideoPostDto } from './dto/create/create-video-post.dto';
+import { AllCreateDto } from './dto/create/content';
 
 @Injectable()
 export class PostsService {
@@ -13,7 +11,7 @@ export class PostsService {
     private readonly postRepository: PostRepository,
     private readonly basePostContentService: PostContentService
   ) {}
-  public async create(postType: PostType, dto: CreateVideoPostDto) {
+  public async create(postType: PostType, dto: AllCreateDto) {
     const contentId = (
       await this.basePostContentService.save(postType, dto.content)
     )?.id;
@@ -34,8 +32,13 @@ export class PostsService {
     };
 
     const postEntity = new PostEntity(post);
+    await this.postRepository.save(postEntity);
+    const fullEntity = {
+      ...postEntity.toPOJO(),
+      content: dto.content,
+    };
 
-    return this.postRepository.save(postEntity);
+    return fullEntity;
   }
 
   public async findAll() {
