@@ -30,12 +30,16 @@ export class PostsService {
       repost: false,
       tags: dto.tags,
     };
-
+    const contentEntity = await this.basePostContentService.findById(
+      postType,
+      contentId
+    );
     const postEntity = new PostEntity(post);
     await this.postRepository.save(postEntity);
+
     const fullEntity = {
       ...postEntity.toPOJO(),
-      content: dto.content,
+      content: contentEntity?.toPOJO(),
     };
 
     return fullEntity;
