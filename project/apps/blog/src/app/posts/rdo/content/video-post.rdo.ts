@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PostRdo } from './post.rdo';
+import { PostRdo } from '../post.rdo';
 import { VideoPostContent } from '@project/libs/shared/app/types';
 import { Expose } from 'class-transformer';
 

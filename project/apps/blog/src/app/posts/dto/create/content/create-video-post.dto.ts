@@ -1,5 +1,5 @@
 import { VideoPostContent } from '@project/libs/shared/app/types';
-import { CreatePostDto } from './create-post.dto';
+import { CreatePostDto } from '../create-post.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateVideoPostDto extends CreatePostDto {
