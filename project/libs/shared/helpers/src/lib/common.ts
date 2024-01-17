@@ -26,12 +26,12 @@ export function fillDto<T, V extends PlainObject>(
 }
 
 interface config {
-  username: string;
-  password: string;
-  host: string;
-  port: string;
-  databaseName: string;
-  authDatabase: string;
+  username?: string;
+  password?: string;
+  host?: string;
+  port?: string;
+  databaseName?: string;
+  authDatabase?: string;
 }
 
 export function getMongoConnectionString({
