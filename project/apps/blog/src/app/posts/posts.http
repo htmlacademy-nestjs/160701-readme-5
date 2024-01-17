@@ -1,0 +1,50 @@
+#Комментарии
+@hostname = http://localhost
+@port = 4444
+@prefix = api/v1
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = posts
+@contentType = application/json
+@POST_ID = 1c3e0eae-fad2-4beb-9bd8-8baac7aabfff
+@USER_ID = 2a83efd4-07da-42c5-ad2f-339dcb1c3352
+# @CONTENT_ID =26c60e02-6db6-49b2-ba5f-9024a7fb3941
+@CONTENT_ID =e9ed6476-be0f-4495-a4f3-a8a16793d82d
+
+
+### Все посты
+GET {{host}}/{{parentPath}} HTTP/1.1
+
+### Создать видео пост
+POST {{host}}/{{parentPath}}/video HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "content": {
+    "title": "Мой др 33",
+    "url": "https://youtu.be/ss9uvs0ujef"
+  },
+  "tags": ["hb", "party"],
+  "author": "df191215-1f3c-407d-96b2-390bdfae1961"
+}
+
+### Получить данные контента
+GET  {{host}}/{{parentPath}}/content/{{CONTENT_ID}}?postType=video HTTP/1.1
+### Получить все посты
+GET  {{host}}/{{parentPath}} HTTP/1.1
+
+
+### Обновить пост
+
+PATCH  {{host}}/{{parentPath}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "content": {
+    "title": "Мой др 33",
+    "url": "https://youtu.be/ss9uvs0ujef"
+  },
+  "author": "df191215-1f3c-407d-96b2-390bdfae1961"
+}
+
+### Получить все типы постов
+GET  {{host}}/{{parentPath}}/types HTTP/1.1

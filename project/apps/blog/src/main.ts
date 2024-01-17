@@ -7,12 +7,36 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import { attachSwagger } from '@project/shared/helpers';
+import { DocumentBuilder } from '@nestjs/swagger';
+import {
+  AllOptionPostContentArray,
+  AllPostContentArray,
+} from '@project/libs/shared/app/types';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
+  const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+
+  attachSwagger({
+    app,
+    DocumentBuilder: new DocumentBuilder()
+      .setTitle('The «Blog» service')
+      .setDescription('«Blog» service API')
+      .setVersion('1.0')
+      .addTag('posts', 'Публикации')
+      .addTag('likes', 'Лайки')
+      .addTag('comments', 'Комментарии'),
+    swaggerCustomOptions: {
+      customSiteTitle: '[Blog] Swagger UI',
+    },
+    documentOptions: {
+      extraModels: [...AllPostContentArray, ...AllOptionPostContentArray],
+    },
+  });
+
+  const port = process.env.PORT || 4444;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

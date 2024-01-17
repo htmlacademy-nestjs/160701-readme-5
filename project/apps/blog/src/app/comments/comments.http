@@ -1,0 +1,39 @@
+#Комментарии
+@hostname = http://localhost
+@port = 4444
+@prefix = api/v1
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = comments
+@contentType = application/json
+@POST_ID = 1c3e0eae-fad2-4beb-9bd8-8baac7aabfff
+@COMMENT_ID = 6b710e8c-640d-4eaa-a933-c68e274b4d53
+
+### Все комментарии
+GET {{host}}/{{parentPath}} HTTP/1.1
+
+### Создать комментарий
+POST {{host}}/{{parentPath}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "message": "Lorem ipsum 666",
+  "postId": "{{POST_ID}}"
+}
+
+### Получить комментарии к посту
+GET {{host}}/{{parentPath}}/post/{{POST_ID}} HTTP/1.1
+
+### Получить комментарий
+GET {{host}}/{{parentPath}}/{{COMMENT_ID}} HTTP/1.1
+
+### Обновить комментарий
+PATCH   {{host}}/{{parentPath}}/{{COMMENT_ID}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "message": "Lorem ipsum 777"  
+}
+
+
+### Удалить комментарий
+DELETE  {{host}}/{{parentPath}}/{{COMMENT_ID}} HTTP/1.1
