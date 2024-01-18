@@ -5,7 +5,7 @@
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = auth
 @contentType = application/json
-@USER_ID = 1c3e0eae-fad2-4beb-9bd8-8baac7aabfff
+@USER_ID = 65a8be2bf72eba2b50420cf7
 
 
 
@@ -15,7 +15,7 @@ Content-Type: {{contentType}}
 
 {
   "email": "2@2.net",
-  "firstName": "Jay",
+  "firstname": "Jay",
   "lastname": "Cutler",
   "password": "shining"
 }
