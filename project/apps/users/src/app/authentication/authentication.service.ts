@@ -107,7 +107,7 @@ export class AuthenticationService {
     try {
       const accessToken = await this.jwtService.signAsync(payload);
 
-      return { accessToken };
+      return accessToken;
     } catch (error: any) {
       this.logger.error('[Token generation error]: ' + error.message);
 

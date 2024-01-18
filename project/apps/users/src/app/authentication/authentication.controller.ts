@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,6 +19,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
 import { MongoIdValidationPipe } from '@project/shared/core';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -66,8 +68,12 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
+    const accessToken = await this.authService.createUserToken(verifiedUser);
 
-    return fillDto(LoggedUserRdo, verifiedUser.toPOJO());
+    return fillDto(LoggedUserRdo, {
+      ...verifiedUser.toPOJO(),
+      accessToken,
+    });
   }
 
   @ApiResponse({
@@ -79,6 +85,7 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUserById(id);
@@ -101,7 +108,8 @@ export class AuthenticationController {
     description: 'Bad request data',
     schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
-  @Patch('change-password/:id')
+  @UseGuards(JwtAuthGuard)
+  @Patch('change-password/:id') //TODO получение id из jwt
   public async changePassword(
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto

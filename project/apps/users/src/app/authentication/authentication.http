@@ -5,9 +5,8 @@
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = auth
 @contentType = application/json
-# @USER_ID = 65a8be2bf72eba2b50420cf7
-@USER_ID = 1
-
+@USER_ID = 65a8be2bf72eba2b50420cf7
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1bmRlZmluZWQiLCJlbWFpbCI6IjJAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNTU5NzQxNCwiZXhwIjoxNzA1NTk4MDE0fQ.Gco-MwYhB7jPrPG8LzZCkLS2RopKr6fJwruryWvmnRk
 
 
 ### Регистрация пользователя
@@ -36,12 +35,13 @@ Content-Type: {{contentType}}
 ## Проверка пользователя
 
 GET {{host}}/{{parentPath}}/{{USER_ID}} HTTP/1.1
-
+Authorization: Bearer {{token}}
 
 ###
 ## Изменение пароля пользователя
 PATCH {{host}}/{{parentPath}}/change-password/{{USER_ID}} HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
 
 {  
   "oldPassword": "shining3",
