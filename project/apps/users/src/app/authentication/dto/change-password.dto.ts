@@ -3,14 +3,8 @@ import { MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @ApiProperty({
-    description: 'The uniq user ID',
-    example: 'df191215-1f3c-407d-96b2-390bdfae1961',
-  })
-  public id!: string;
-
-  @ApiProperty({
     description: 'User old password',
-    example: 'qwerty',
+    example: '123456',
     minLength: 6,
     maxLength: 12,
   })

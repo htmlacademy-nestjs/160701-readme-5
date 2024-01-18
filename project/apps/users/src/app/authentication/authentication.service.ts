@@ -66,8 +66,8 @@ export class AuthenticationService {
     return existUser;
   }
 
-  public async changePassword(dto: ChangePasswordDto) {
-    const { id, oldPassword, newPassword } = dto;
+  public async changePassword(id: string, dto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = dto;
     const existUser = await this.getUserById(id);
     const isOldPasswordCorrect = await existUser.comparePassword(oldPassword);
 
@@ -75,8 +75,10 @@ export class AuthenticationService {
       throw new BadRequestException(OLD_PASSWORD_NOT_CORRECT);
     }
 
-    await existUser.setPassword(newPassword);
+    const newUser = await existUser.setPassword(newPassword);
 
-    return existUser;
+    await this.blogUserRepository.update(id, newUser);
+
+    return newUser;
   }
 }

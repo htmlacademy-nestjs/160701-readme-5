@@ -101,9 +101,12 @@ export class AuthenticationController {
     description: 'Bad request data',
     schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
-  @Patch('change-password')
-  public async changePassword(@Body() dto: ChangePasswordDto) {
-    await this.authService.changePassword(dto);
+  @Patch('change-password/:id')
+  public async changePassword(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Body() dto: ChangePasswordDto
+  ) {
+    await this.authService.changePassword(id, dto);
 
     return fillDto(ChangePasswordRdo, {
       message: 'Password changed successfully',
