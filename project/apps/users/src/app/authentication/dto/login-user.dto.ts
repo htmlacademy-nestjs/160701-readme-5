@@ -13,6 +13,8 @@ export class LoginUserDto {
   @ApiProperty({
     description: 'User password',
     example: '123456',
+    minLength: 6,
+    maxLength: 12,
   })
   @MinLength(6)
   @MaxLength(12)
