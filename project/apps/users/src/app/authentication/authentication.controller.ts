@@ -17,6 +17,7 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
+import { MongoIdValidationPipe } from '@project/shared/core';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -79,7 +80,7 @@ export class AuthenticationController {
     schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
   @Get(':id')
-  public async show(@Param('id') id: string) {
+  public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUserById(id);
 
     return fillDto(UserRdo, existUser.toPOJO());
