@@ -16,7 +16,6 @@ Content-Type: {{contentType}}
 {
   "email": "2@2.net",
   "firstname": "Jay",
-  "lastname": "Cutler",
   "password": "shining"
 }
 

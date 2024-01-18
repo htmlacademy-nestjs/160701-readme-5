@@ -22,12 +22,11 @@ export class AuthenticationService {
   constructor(private readonly blogUserRepository: BlogUserRepository) {}
 
   public async register(dto: CreateUserDto) {
-    const { email, firstname, lastname, password } = dto;
+    const { email, firstname, password } = dto;
 
     const blogUser: AuthUser = {
       email,
       firstname,
-      lastname,
       role: UserRole.User,
       avatar: '',
       passwordHash: '',
