@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { attachSwagger } from '@project/shared/helpers';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,8 +26,9 @@ async function bootstrap() {
       customSiteTitle: '[Users] Swagger UI',
     },
   });
+  const configService = app.get(ConfigService);
+  const port = configService.get('application.port');
 
-  const port = process.env.PORT || 3333;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

@@ -66,4 +66,8 @@ export class BlogUserEntity implements AuthUser, Entity<string> {
 
     return isPasswordEqual;
   }
+
+  static fromObject(data: AuthUser): BlogUserEntity {
+    return new BlogUserEntity(data);
+  }
 }

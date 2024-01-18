@@ -10,7 +10,7 @@ interface attachSwagger {
   DocumentBuilder: DocumentBuilder;
   pathsToRemove?: string[];
   swaggerCustomOptions?: SwaggerCustomOptions;
-  documentOptions: any;
+  documentOptions?: any;
 }
 
 export const attachSwagger = ({
