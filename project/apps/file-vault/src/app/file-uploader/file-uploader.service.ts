@@ -6,6 +6,8 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { FileVaultConfig } from '@project/config/file-vault';
 import dayjs from 'dayjs';
+import { randomUUID } from 'node:crypto';
+import { extension } from 'mime-types';
 
 @Injectable()
 export class FileUploaderService {
@@ -18,7 +20,7 @@ export class FileUploaderService {
 
   private getUploadDirectoryPath(): string {
     const [year, month] = dayjs().format('YYYY MM').split(' ');
-    
+
     return join(this.config.uploadDirectory, year, month);
   }
 
@@ -29,7 +31,12 @@ export class FileUploaderService {
   public async saveFile(file: Express.Multer.File): Promise<string> {
     try {
       const uploadDirectoryPath = this.getUploadDirectoryPath();
-      const destinationFile = this.getDestinationFilePath(file.originalname);
+      const filename = randomUUID();
+      const fileExtension = extension(file.mimetype);
+
+      const destinationFile = this.getDestinationFilePath(
+        `${filename}.${fileExtension}`
+      );
 
       await ensureDir(uploadDirectoryPath);
       await writeFile(destinationFile, file.buffer);
@@ -41,4 +48,3 @@ export class FileUploaderService {
     }
   }
 }
-
