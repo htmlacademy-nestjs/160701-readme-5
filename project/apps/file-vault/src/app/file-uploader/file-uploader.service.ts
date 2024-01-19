@@ -5,6 +5,7 @@ import { ensureDir } from 'fs-extra';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { FileVaultConfig } from '@project/config/file-vault';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class FileUploaderService {
@@ -16,7 +17,9 @@ export class FileUploaderService {
   ) {}
 
   private getUploadDirectoryPath(): string {
-    return this.config.uploadDirectory;
+    const [year, month] = dayjs().format('YYYY MM').split(' ');
+    
+    return join(this.config.uploadDirectory, year, month);
   }
 
   private getDestinationFilePath(filename: string): string {
@@ -38,3 +41,4 @@ export class FileUploaderService {
     }
   }
 }
+
