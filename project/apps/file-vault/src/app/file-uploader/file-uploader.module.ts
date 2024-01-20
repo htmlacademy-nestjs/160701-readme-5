@@ -16,12 +16,14 @@ import { FileModel, FileSchema } from './file.model';
           'application.uploadDirectory'
         );
         const serveRoot = configService.get<string>('application.serveRoot');
+
         return [
           {
             rootPath,
             serveRoot,
             serveStaticOptions: {
-              fallthrough: true,
+              fallthrough: false,
+              maxAge: 0,
             },
           },
         ];
