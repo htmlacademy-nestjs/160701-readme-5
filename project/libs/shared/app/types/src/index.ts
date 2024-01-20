@@ -18,3 +18,4 @@ export * from './lib/blog/posts/content/text-post-content.interface';
 export * from './lib/blog/posts/content/video-post-content.interface';
 
 export * from './lib/notify/subscriber.interface';
+export * from './lib/notify/rabbit-routing.enum';
