@@ -3,7 +3,7 @@ import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { ensureDir } from 'fs-extra';
 import { writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import path, { join } from 'node:path';
 import { FileVaultConfig } from '@project/config/file-vault';
 import dayjs from 'dayjs';
 import { randomUUID } from 'node:crypto';
@@ -15,7 +15,7 @@ import { StoredFile } from '@project/libs/shared/app/types';
 @Injectable()
 export class FileUploaderService {
   private readonly logger = new Logger(FileUploaderService.name);
-  private readonly DATE_FORMAT = 'YYYY MM';
+  private readonly DATE_FORMAT = 'YYYY/MM/DD';
 
   constructor(
     @Inject(FileVaultConfig.KEY)
@@ -36,9 +36,9 @@ export class FileUploaderService {
   }
 
   private getSubUploadDirectoryPath(): string {
-    const [year, month] = dayjs().format(this.DATE_FORMAT).split(' ');
+    const path = dayjs().format(this.DATE_FORMAT).split('/');
 
-    return join(year, month);
+    return join(...path);
   }
 
   public async saveFile(file: Express.Multer.File): Promise<FileEntity> {
@@ -71,16 +71,16 @@ export class FileUploaderService {
       const subDirectory = this.getSubUploadDirectoryPath();
       const fileExtension = String(extension(file.mimetype));
       const filename = `${randomUUID()}.${fileExtension}`;
-
-      const path = this.getDestinationFilePath(filename);
+      const destinationPath = this.getDestinationFilePath(filename);
+      const relativePath = path.relative(uploadDirectoryPath, destinationPath);
 
       await ensureDir(join(uploadDirectoryPath, subDirectory));
-      await writeFile(path, file.buffer);
+      await writeFile(destinationPath, file.buffer);
 
       return {
         fileExtension,
         filename,
-        path,
+        path: relativePath,
         subDirectory,
       };
     } catch (error: any) {
