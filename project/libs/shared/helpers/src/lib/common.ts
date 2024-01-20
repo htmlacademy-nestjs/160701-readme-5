@@ -25,7 +25,7 @@ export function fillDto<T, V extends PlainObject>(
   });
 }
 
-interface config {
+interface configMongo {
   username?: string;
   password?: string;
   host?: string;
@@ -41,6 +41,21 @@ export function getMongoConnectionString({
   port,
   databaseName,
   authDatabase,
-}: config): string {
+}: configMongo): string {
   return `mongodb://${username}:${password}@${host}:${port}/${databaseName}?authSource=${authDatabase}`;
+}
+
+interface configRabbitMQ {
+  user?: string;
+  password?: string;
+  host?: string;
+  port?: string;
+}
+export function getRabbitMQConnectionString({
+  user,
+  password,
+  host,
+  port,
+}: configRabbitMQ): string {
+  return `amqp://${user}:${password}@${host}:${port}`;
 }
