@@ -9,7 +9,7 @@ import { EmailSubscriberService } from './email-subscriber.service';
 import { EmailSubscriberRepository } from './repository/email-subscriber.repository';
 import { getRabbitMQOptions } from '@project/shared/helpers';
 import { EmailSubscriberController } from './email-subscriber.controller';
-
+import { MailModule } from '../mail/mail.module';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -19,6 +19,7 @@ import { EmailSubscriberController } from './email-subscriber.controller';
       RabbitMQModule,
       getRabbitMQOptions('application.rabbit')
     ),
+    MailModule,
   ],
   controllers: [EmailSubscriberController],
   providers: [EmailSubscriberService, EmailSubscriberRepository],
