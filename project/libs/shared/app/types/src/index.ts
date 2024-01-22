@@ -19,3 +19,8 @@ export * from './lib/blog/posts/content/video-post-content.interface';
 
 export * from './lib/notify/subscriber.interface';
 export * from './lib/notify/rabbit-routing.enum';
+export * from './lib/token-payload.interface';
+export * from './lib/token.interface';
+
+export * from './lib/file-vault/file.interface';
+export * from './lib/file-vault/stored-file.interface';

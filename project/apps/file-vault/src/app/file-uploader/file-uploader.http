@@ -1,0 +1,72 @@
+# Пользователь
+@hostname = http://localhost
+@port = 5555
+@prefix = api/v1
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = files
+@contentType = application/json
+@fileId= 65aa94af93035c044aafb8d9
+
+### Отправить текстовый файл 
+@avatarFileName= file-uploader.http
+@fileTextFieldName=file
+###
+POST {{host}}/{{parentPath}}/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{fileTextFieldName}}"
+
+JohnDoe
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{fileTextFieldName}}"; filename="{{avatarFileName}}"
+
+< ./{{avatarFileName}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+### Отправить файл аватара
+@avatarFileName = userpic-elvira.jpg
+@avatarFieldName = avatar
+###
+POST {{host}}/{{parentPath}}/upload/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{avatarFieldName}}"
+
+JohnDoe
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{avatarFieldName}}"; filename="{{avatarFileName}}"
+Content-Type: image/png
+
+< /home/Dmitry/Документы/GitHub/160701-readme-5/markup/img/{{avatarFileName}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Отправить файл фото поста
+@photoPostFileName = coast.jpg
+@photoPostFieldName = photo
+###
+POST {{host}}/{{parentPath}}/upload/post/photo HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{photoPostFieldName}}"
+
+JohnDoe
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{photoPostFieldName}}"; filename="{{photoPostFileName}}"
+Content-Type: image/png
+
+< /home/Dmitry/Документы/GitHub/160701-readme-5/markup/img/{{photoPostFileName}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+### Получить файл по ID
+GET  {{host}}/{{parentPath}}/{{fileId}} HTTP/1.1
+
+###

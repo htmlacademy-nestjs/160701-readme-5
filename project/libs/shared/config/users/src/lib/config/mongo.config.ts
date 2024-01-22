@@ -4,15 +4,6 @@ import { registerAs, ConfigType } from '@nestjs/config';
 import { MongoConfiguration } from '../mongodb/mongo.env';
 import { DEFAULT_MONGO_PORT } from '../mongodb/mongo.const';
 
-export interface MongoConfig {
-  host: string;
-  name: string;
-  port: number;
-  user: string;
-  password: string;
-  authBase: string;
-}
-
 async function getDbConfig(): Promise<MongoConfiguration> {
   const config = plainToClass(MongoConfiguration, {
     host: process.env.MONGO_HOST,

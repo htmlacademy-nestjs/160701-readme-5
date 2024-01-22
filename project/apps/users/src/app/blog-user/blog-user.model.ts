@@ -29,11 +29,6 @@ export class BlogUserModel extends Document implements AuthUser {
   @Prop({
     required: true,
   })
-  public lastname!: string;
-
-  @Prop({
-    required: true,
-  })
   public passwordHash!: string;
 
   @Prop({
