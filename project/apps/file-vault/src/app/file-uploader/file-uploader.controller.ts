@@ -21,6 +21,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { FileValidationPipe } from './pipes/file-validation.pipe';
+import { ALLOWED_MIMETYPES, FileMaxSize, MB } from './file-uploader.constant';
 
 @ApiTags('files')
 @Controller('files')
@@ -32,22 +34,39 @@ export class FileUploaderController {
     status: HttpStatus.CREATED,
     description: 'File uploaded successfully',
   })
-  @ApiOperation({ summary: 'Загрузить файл' })
+  @ApiOperation({ summary: 'Загрузить файл аватара' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
+    required: true,
     schema: {
       type: 'object',
       properties: {
         file: {
           type: 'string',
           format: 'binary',
+          maxLength: FileMaxSize.Avatar,
         },
       },
     },
   })
-  @Post('/upload')
-  @UseInterceptors(FileInterceptor('file'))
-  public async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  @Post('/upload/avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  public async uploadAvatarFile(
+    @UploadedFile(new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_MIMETYPES))
+    file: Express.Multer.File
+  ) {
+    const existFile = await this.fileUploaderService.saveFile(file);
+
+    return fillDto(UploadedFileRdo, existFile.toPOJO());
+  }
+
+  @ApiOperation({ summary: 'Загрузить файл изображения поста' })
+  @Post('/upload/post/photo')
+  @UseInterceptors(FileInterceptor('photo'))
+  public async uploadPostPhotoFile(
+    @UploadedFile(new FileValidationPipe(1 * MB, ALLOWED_MIMETYPES))
+    file: Express.Multer.File
+  ) {
     const existFile = await this.fileUploaderService.saveFile(file);
 
     return fillDto(UploadedFileRdo, existFile.toPOJO());

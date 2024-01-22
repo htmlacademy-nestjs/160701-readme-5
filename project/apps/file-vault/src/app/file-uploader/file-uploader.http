@@ -7,35 +7,60 @@
 @contentType = application/json
 @fileId= 65aa94af93035c044aafb8d9
 
-### Отправить файл 
+### Отправить текстовый файл 
+@avatarFileName= file-uploader.http
+@fileTextFieldName=file
+###
 POST {{host}}/{{parentPath}}/upload HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"
+Content-Disposition: form-data; name="{{fileTextFieldName}}"
 
 JohnDoe
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="file-uploader.http"
+Content-Disposition: form-data; name="{{fileTextFieldName}}"; filename="{{avatarFileName}}"
 
-< ./file-uploader.http
+< ./{{avatarFileName}}
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 
-### Отправить файл
-POST {{host}}/{{parentPath}}/upload HTTP/1.1
+### Отправить файл аватара
+@avatarFileName = userpic-elvira.jpg
+@avatarFieldName = avatar
+###
+POST {{host}}/{{parentPath}}/upload/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"
+Content-Disposition: form-data; name="{{avatarFieldName}}"
 
 JohnDoe
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="cat.jpg"
+Content-Disposition: form-data; name="{{avatarFieldName}}"; filename="{{avatarFileName}}"
 Content-Type: image/png
 
-< /home/Dmitry/Документы/GitHub/160701-readme-5/markup/img/cat.jpg
+< /home/Dmitry/Документы/GitHub/160701-readme-5/markup/img/{{avatarFileName}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Отправить файл фото поста
+@photoPostFileName = coast.jpg
+@photoPostFieldName = photo
+###
+POST {{host}}/{{parentPath}}/upload/post/photo HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{photoPostFieldName}}"
+
+JohnDoe
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{photoPostFieldName}}"; filename="{{photoPostFileName}}"
+Content-Type: image/png
+
+< /home/Dmitry/Документы/GitHub/160701-readme-5/markup/img/{{photoPostFileName}}
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
