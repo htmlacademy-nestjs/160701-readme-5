@@ -1,13 +1,21 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AuthUser, UserRole } from '@project/libs/shared/app/types';
+import {
+  AuthUser,
+  TokenPayload,
+  User,
+  UserRole,
+} from '@project/libs/shared/app/types';
 import {
   AUTH_USER_EXISTS,
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
@@ -16,18 +24,23 @@ import {
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private readonly blogUserRepository: BlogUserRepository) {}
+  private readonly logger = new Logger(AuthenticationService.name);
+
+  constructor(
+    private readonly blogUserRepository: BlogUserRepository,
+    private readonly jwtService: JwtService
+  ) {}
 
   public async register(dto: CreateUserDto) {
-    const { email, firstname, lastname, password } = dto;
+    const { email, firstname, password } = dto;
 
     const blogUser: AuthUser = {
       email,
       firstname,
-      lastname,
       role: UserRole.User,
       avatar: '',
       passwordHash: '',
@@ -67,8 +80,8 @@ export class AuthenticationService {
     return existUser;
   }
 
-  public async changePassword(dto: ChangePasswordDto) {
-    const { id, oldPassword, newPassword } = dto;
+  public async changePassword(id: string, dto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = dto;
     const existUser = await this.getUserById(id);
     const isOldPasswordCorrect = await existUser.comparePassword(oldPassword);
 
@@ -76,8 +89,32 @@ export class AuthenticationService {
       throw new BadRequestException(OLD_PASSWORD_NOT_CORRECT);
     }
 
-    await existUser.setPassword(newPassword);
+    const newUser = await existUser.setPassword(newPassword);
 
-    return existUser;
+    await this.blogUserRepository.update(id, newUser);
+
+    return newUser;
+  }
+
+  public async createUserToken(user: User) {
+    const payload: TokenPayload = {
+      sub: String(user.id), //TODO id is optional
+      email: user.email,
+      role: user.role,
+      firstname: user.firstname,
+    };
+
+    try {
+      const accessToken = await this.jwtService.signAsync(payload);
+
+      return accessToken;
+    } catch (error: any) {
+      this.logger.error('[Token generation error]: ' + error.message);
+
+      throw new HttpException(
+        'Ошибка при создании токена.',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

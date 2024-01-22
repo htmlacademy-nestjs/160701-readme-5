@@ -17,6 +17,9 @@
     "paths": {
       "@project/config/users": ["libs/shared/config/users/src/index.ts"],
       "@project/libs/shared/app/types": ["libs/shared/app/types/src/index.ts"],
+      "@project/config/file-vault": [
+        "libs/shared/config/file-vault/src/index.ts"
+      ],
       "@project/shared/core": ["libs/shared/core/src/index.ts"],
       "@project/shared/helpers": ["libs/shared/helpers/src/index.ts"]
     },

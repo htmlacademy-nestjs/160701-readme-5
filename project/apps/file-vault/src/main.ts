@@ -7,12 +7,27 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import { attachSwagger } from '@project/shared/helpers';
+import { DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
+  const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+
+  attachSwagger({
+    app,
+    DocumentBuilder: new DocumentBuilder()
+      .setTitle('The «File-vault» service')
+      .setDescription('«File-vault» service API')
+      .setVersion('1.0'),
+    swaggerCustomOptions: {
+      customSiteTitle: '[File-vault] Swagger UI',
+    },
+  });
+  const configService = app.get(ConfigService);
+  const port = configService.get('application.port');
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

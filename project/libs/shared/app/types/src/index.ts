@@ -16,3 +16,9 @@ export * from './lib/blog/posts/content/photo-post-content.interface';
 export * from './lib/blog/posts/content/quote-post-content.interface';
 export * from './lib/blog/posts/content/text-post-content.interface';
 export * from './lib/blog/posts/content/video-post-content.interface';
+
+export * from './lib/token-payload.interface';
+export * from './lib/token.interface';
+
+export * from './lib/file-vault/file.interface';
+export * from './lib/file-vault/stored-file.interface';
