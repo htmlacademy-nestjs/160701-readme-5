@@ -8,6 +8,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSubscriberDto {
   @ApiProperty({
+    description: 'User id',
+    example: '65ae5755dde1bee5f9fc7d22',
+  })
+  @IsNotEmpty({ message: USER_ID_IS_EMPTY })
+  public userId!: string;
+
+  @ApiProperty({
     description: 'User email',
     example: 'keks@academy.com',
   })
