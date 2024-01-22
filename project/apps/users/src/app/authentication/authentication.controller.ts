@@ -125,7 +125,14 @@ export class AuthenticationController {
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto
   ) {
-    await this.authService.changePassword(id, dto);
+    const newUser = await this.authService.changePassword(id, dto);
+    const { email, firstname, id: userId } = newUser.toPOJO();
+
+    await this.notifyService.changePassword({
+      email,
+      firstname,
+      userId: String(userId),
+    });
 
     return fillDto(ChangePasswordRdo, {
       message: 'Password changed successfully',
