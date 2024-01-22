@@ -1,8 +1,9 @@
 import { Subscriber } from '@project/libs/shared/app/types';
 import { Entity } from '@project/shared/core';
 
-export class EmailSubscriberEntity implements Subscriber, Entity<string> {
-  //, Subscriber //TODO: fix when fix entity types
+export class EmailSubscriberEntity
+  implements Subscriber, Entity<string, Subscriber>
+{
   public id?: string;
   public email!: string;
   public firstname!: string;
