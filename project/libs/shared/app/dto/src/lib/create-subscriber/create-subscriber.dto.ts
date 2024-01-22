@@ -20,11 +20,4 @@ export class CreateSubscriberDto {
   })
   @IsNotEmpty({ message: FIRST_NAME_IS_EMPTY })
   public firstname!: string;
-
-  @ApiProperty({
-    description: 'User lastname',
-    example: 'Ivanov',
-  })
-  @IsNotEmpty({ message: USER_ID_IS_EMPTY })
-  public lastname!: string;
 }

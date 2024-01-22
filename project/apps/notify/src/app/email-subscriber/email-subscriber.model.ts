@@ -20,11 +20,6 @@ export class EmailSubscriberModel extends Document implements Subscriber {
   })
   public firstname!: string;
 
-  @Prop({
-    required: true,
-  })
-  public lastname!: string;
-
   public id?: string;
 }
 

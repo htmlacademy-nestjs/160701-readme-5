@@ -33,13 +33,6 @@ export class UserRdo implements Omit<User, 'role'> {
 
   @Expose()
   @ApiProperty({
-    description: 'User last name',
-    example: 'Keks',
-  })
-  public lastname!: string;
-
-  @Expose()
-  @ApiProperty({
     type: Date,
     description: 'User create date',
     example: '2024-01-09T14:55:34.697Z',
