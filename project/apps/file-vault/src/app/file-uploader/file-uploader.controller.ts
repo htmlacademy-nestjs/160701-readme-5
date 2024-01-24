@@ -41,10 +41,12 @@ export class FileUploaderController {
     schema: {
       type: 'object',
       properties: {
-        file: {
+        avatar: {
           type: 'string',
           format: 'binary',
           maxLength: FileMaxSize.Avatar,
+          description: 'PNG or JPG file',
+          enum: ['image/png', 'image/jpeg'],
         },
       },
     },
@@ -61,6 +63,22 @@ export class FileUploaderController {
   }
 
   @ApiOperation({ summary: 'Загрузить файл изображения поста' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        photo: {
+          type: 'string',
+          format: 'binary',
+          maxLength: FileMaxSize.PostPhoto,
+          description: 'PNG or JPG file',
+          enum: ['image/png', 'image/jpeg'],
+        },
+      },
+    },
+  })
   @Post('/upload/post/photo')
   @UseInterceptors(FileInterceptor('photo'))
   public async uploadPostPhotoFile(

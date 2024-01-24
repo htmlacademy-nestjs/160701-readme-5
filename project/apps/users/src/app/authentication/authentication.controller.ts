@@ -12,11 +12,15 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
+import {
+  AuthKeyName,
+  fillDto,
+  generateSchemeApiError,
+} from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
 // import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
 import { NotifyService } from '../notify/notify.service';
@@ -98,6 +102,7 @@ export class AuthenticationController {
     });
   }
 
+  @ApiBearerAuth(AuthKeyName)
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
@@ -110,6 +115,7 @@ export class AuthenticationController {
     return this.authService.createUserToken(user);
   }
 
+  @ApiBearerAuth(AuthKeyName)
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
@@ -142,6 +148,7 @@ export class AuthenticationController {
     description: 'Bad request data',
     schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
+  @ApiBearerAuth(AuthKeyName)
   @UseGuards(JwtAuthGuard)
   @Patch('change-password/:id') //TODO получение id из jwt
   public async changePassword(
