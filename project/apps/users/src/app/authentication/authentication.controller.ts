@@ -14,7 +14,7 @@ import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
-import { LoginUserDto } from './dto/login-user.dto';
+// import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -86,12 +86,13 @@ export class AuthenticationController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   public async login(@Req() { user }: RequestWithUser) {
-    // const verifiedUser = await this.authService.verifyUser(dto);
-    const accessToken = await this.authService.createUserToken(user);
+    const { accessToken, refreshToken } =
+      await this.authService.createUserToken(user);
 
     return fillDto(LoggedUserRdo, {
       ...user.toPOJO(),
       accessToken,
+      refreshToken,
     });
   }
 
