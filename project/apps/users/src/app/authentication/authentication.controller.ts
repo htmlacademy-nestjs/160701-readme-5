@@ -24,6 +24,8 @@ import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { RefreshUserRdo } from './rdo/refresh-user.rdo';
 
 interface RequestWithUser {
   user: BlogUserEntity;
@@ -94,6 +96,18 @@ export class AuthenticationController {
       accessToken,
       refreshToken,
     });
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: RefreshUserRdo,
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens',
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
   @ApiResponse({
