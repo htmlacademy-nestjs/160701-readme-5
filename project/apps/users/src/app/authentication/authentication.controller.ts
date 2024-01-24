@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
@@ -21,6 +22,12 @@ import { ChangePasswordRdo } from './rdo/change-password.rdo';
 import { NotifyService } from '../notify/notify.service';
 import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { BlogUserEntity } from '../blog-user/blog-user.entity';
+
+interface RequestWithUser {
+  user: BlogUserEntity;
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -75,14 +82,15 @@ export class AuthenticationController {
       HttpStatus.UNAUTHORIZED
     ),
   })
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const accessToken = await this.authService.createUserToken(verifiedUser);
+  public async login(@Req() { user }: RequestWithUser) {
+    // const verifiedUser = await this.authService.verifyUser(dto);
+    const accessToken = await this.authService.createUserToken(user);
 
     return fillDto(LoggedUserRdo, {
-      ...verifiedUser.toPOJO(),
+      ...user.toPOJO(),
       accessToken,
     });
   }

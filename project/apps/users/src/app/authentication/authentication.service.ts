@@ -96,7 +96,7 @@ export class AuthenticationService {
     return newUser;
   }
 
-  public async createUserToken(user: User) {
+  public async createUserToken(user: BlogUserEntity) {
     const payload: TokenPayload = {
       sub: String(user.id), //TODO id is optional
       email: user.email,
