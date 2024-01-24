@@ -26,7 +26,7 @@ import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
-import jwtConfig from 'libs/shared/config/users/src/lib/jwt/jwt.config';
+import { jwtConfig } from '@project/config/users';
 import { ConfigType } from '@nestjs/config';
 import { log } from 'handlebars';
 
@@ -82,6 +82,15 @@ export class AuthenticationService {
 
     if (!existUser) {
       throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return existUser;
+  }
+
+  public async getUserByEmail(email: string) {
+    const existUser = await this.blogUserRepository.findByEmail(email);
+
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${email} not found`);
     }
     return existUser;
   }
