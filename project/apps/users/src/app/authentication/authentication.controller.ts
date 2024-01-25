@@ -18,7 +18,6 @@ import {
   generateSchemeApiError,
 } from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
-// import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -27,11 +26,9 @@ import { NotifyService } from '../notify/notify.service';
 import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RefreshUserRdo } from './rdo/refresh-user.rdo';
 import { RequestWithUser } from '../blog-user/request-with-user.interface';
-
 
 @ApiTags('auth')
 @Controller('auth')

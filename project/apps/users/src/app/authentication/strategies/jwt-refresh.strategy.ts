@@ -5,7 +5,7 @@ import { ConfigType } from '@nestjs/config';
 
 import { AuthenticationService } from '../authentication.service';
 import { jwtConfig } from '@project/config/users';
-import { RefreshTokenPayload, TokenPayload } from '@project/libs/shared/app/types';
+import { RefreshTokenPayload } from '@project/libs/shared/app/types';
 import { RefreshTokenService } from '../../refresh-token/refresh-token.service';
 import { TokenNotExistsException } from '../exceptions/token-not-exists.exception';
 
