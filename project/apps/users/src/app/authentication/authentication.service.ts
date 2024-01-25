@@ -13,7 +13,6 @@ import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   AuthUser,
-  TokenPayload,
   User,
   UserRole,
 } from '@project/libs/shared/app/types';
@@ -28,7 +27,9 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/config/users';
 import { ConfigType } from '@nestjs/config';
-import { log } from 'handlebars';
+import { createJWTPayload } from '@project/shared/helpers';
+import { RefreshTokenService } from '../refresh-token/refresh-token.service';
+import * as crypto from 'node:crypto';
 
 @Injectable()
 export class AuthenticationService {
@@ -38,7 +39,8 @@ export class AuthenticationService {
     private readonly blogUserRepository: BlogUserRepository,
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -111,17 +113,15 @@ export class AuthenticationService {
     return newUser;
   }
 
-  public async createUserToken(user: BlogUserEntity) {
-    const payload: TokenPayload = {
-      sub: String(user.id), //TODO id is optional
-      email: user.email,
-      role: user.role,
-      firstname: user.firstname,
-    };
+  public async createUserToken(user: User) {
+    const accessTokenPayload = createJWTPayload(user)
+    const refreshTokenPayload = {...accessTokenPayload, tokenId: crypto.randomUUID()}
+
+    await this.refreshTokenService.createRefreshSession(refreshTokenPayload)
 
     try {
-      const accessToken = await this.jwtService.signAsync(payload);
-      const refreshToken = await this.jwtService.signAsync(payload, {
+      const accessToken = await this.jwtService.signAsync(accessTokenPayload);
+      const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.jwtOptions.refreshTokenSecret,
         expiresIn: this.jwtOptions.refreshTokenExpiresIn,
       });
