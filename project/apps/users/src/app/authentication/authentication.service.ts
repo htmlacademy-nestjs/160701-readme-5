@@ -11,11 +11,7 @@ import {
 } from '@nestjs/common';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import {
-  AuthUser,
-  User,
-  UserRole,
-} from '@project/libs/shared/app/types';
+import { AuthUser, User, UserRole } from '@project/libs/shared/app/types';
 import {
   AUTH_USER_EXISTS,
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
@@ -25,8 +21,7 @@ import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConfig } from '@project/config/users';
-import { ConfigType } from '@nestjs/config';
+import { JWT_ACCESS_KEY, JWT_REFRESH_KEY } from '@project/config/users';
 import { createJWTPayload } from '@project/shared/helpers';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import * as crypto from 'node:crypto';
@@ -37,10 +32,11 @@ export class AuthenticationService {
 
   constructor(
     private readonly blogUserRepository: BlogUserRepository,
-    private readonly jwtService: JwtService,
-    @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
-    private readonly refreshTokenService: RefreshTokenService,
+    @Inject(JWT_ACCESS_KEY)
+    private readonly jwtAccessService: JwtService,
+    @Inject(JWT_REFRESH_KEY)
+    private readonly jwtRefreshService: JwtService,
+    private readonly refreshTokenService: RefreshTokenService
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -114,17 +110,21 @@ export class AuthenticationService {
   }
 
   public async createUserToken(user: User) {
-    const accessTokenPayload = createJWTPayload(user)
-    const refreshTokenPayload = {...accessTokenPayload, tokenId: crypto.randomUUID()}
+    const accessTokenPayload = createJWTPayload(user);
+    const refreshTokenPayload = {
+      ...accessTokenPayload,
+      tokenId: crypto.randomUUID(),
+    };
 
-    await this.refreshTokenService.createRefreshSession(refreshTokenPayload)
+    await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
     try {
-      const accessToken = await this.jwtService.signAsync(accessTokenPayload);
-      const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
-        secret: this.jwtOptions.refreshTokenSecret,
-        expiresIn: this.jwtOptions.refreshTokenExpiresIn,
-      });
+      const accessToken = await this.jwtAccessService.signAsync(
+        accessTokenPayload
+      );
+      const refreshToken = await this.jwtRefreshService.signAsync(
+        refreshTokenPayload
+      );
 
       return { accessToken, refreshToken };
     } catch (error: any) {
