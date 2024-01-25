@@ -5,6 +5,8 @@ import { AuthUser, UserRole } from '@project/libs/shared/app/types';
 @Schema({
   collection: 'users',
   timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
 })
 export class BlogUserModel extends Document implements AuthUser {
   @Prop()
