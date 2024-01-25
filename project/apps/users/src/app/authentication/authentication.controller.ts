@@ -30,10 +30,8 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RefreshUserRdo } from './rdo/refresh-user.rdo';
+import { RequestWithUser } from '../blog-user/request-with-user.interface';
 
-interface RequestWithUser {
-  user: BlogUserEntity;
-}
 
 @ApiTags('auth')
 @Controller('auth')
