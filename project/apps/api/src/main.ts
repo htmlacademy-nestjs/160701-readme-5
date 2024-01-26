@@ -9,12 +9,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { attachSwagger } from '@project/shared/helpers';
 import { DocumentBuilder } from '@nestjs/swagger';
+import { RequestIdInterceptor } from './app/interceptors/request-id.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-
+  app.useGlobalInterceptors(new RequestIdInterceptor());
   attachSwagger({
     app,
     DocumentBuilder: new DocumentBuilder()
