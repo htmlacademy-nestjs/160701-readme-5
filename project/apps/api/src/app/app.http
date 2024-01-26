@@ -1,0 +1,29 @@
+# BFF
+@hostname = http://localhost
+@port = 3000
+@prefix = api
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = auth
+@contentType = application/json
+@USER_ID = 65a8be2bf72eba2b50420cf7
+@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1bmRlZmluZWQiLCJlbWFpbCI6IjJAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNTU5NzQxNCwiZXhwIjoxNzA1NTk4MDE0fQ.Gco-MwYhB7jPrPG8LzZCkLS2RopKr6fJwruryWvmnRk
+@token-refresh =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWIyYTEwOWRjZjJkMjY3NjUwMWIyMTAiLCJlbWFpbCI6IjFAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsInRva2VuSWQiOiIyNDBhM2ZlZS00MTFhLTRiOWQtOGJiNy1lNjQ4YmFmOGJhNzQiLCJpYXQiOjE3MDYyMDU5MTAsImV4cCI6MTcwNjIwNjUxMH0.OXSbWixOEV_RXIqtrZk7cQd-Uw_yqVGazDZvGCmPTm4
+
+
+## Авторизовать пользователя
+
+POST {{host}}/{{parentPath}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "1@2.net",
+  "password": "shining"
+}
+
+###
+## Получить новую JWT пару
+
+POST {{host}}/{{parentPath}}/refresh HTTP/1.1
+Authorization: Bearer {{token-refresh}}
+
+###
