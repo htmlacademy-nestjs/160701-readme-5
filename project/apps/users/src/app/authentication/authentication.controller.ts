@@ -29,6 +29,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RefreshUserRdo } from './rdo/refresh-user.rdo';
 import { RequestWithUser } from '../blog-user/request-with-user.interface';
+import { RequestWithTokenPayload } from '@project/libs/shared/app/types';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -162,5 +163,11 @@ export class AuthenticationController {
     return fillDto(ChangePasswordRdo, {
       message: 'Password changed successfully',
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user }: RequestWithTokenPayload) {
+    return user;
   }
 }

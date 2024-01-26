@@ -56,3 +56,9 @@ Authorization: Bearer {{token-access}}
 }
 
 ###
+
+###
+## Проверка токена
+
+POST {{host}}/{{parentPath}}/check HTTP/1.1
+Authorization: Bearer {{token-access}}
