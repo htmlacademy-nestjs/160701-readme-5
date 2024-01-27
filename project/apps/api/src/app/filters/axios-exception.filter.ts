@@ -16,7 +16,7 @@ export class AxiosExceptionFilter implements ExceptionFilter {
     const message = error.response?.statusText || 'Internal server error';
 
     response.status(status).json({
-      statsCode: status,
+      statusCode: status,
       message,
     });
   }
