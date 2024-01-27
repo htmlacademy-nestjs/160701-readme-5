@@ -122,9 +122,11 @@ export class AuthenticationController {
     schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  public async show(@Param('id', MongoIdValidationPipe) id: string) {
-    const existUser = await this.authService.getUserById(id);
+  @Get('info')
+  public async show(@Req() { user }: RequestWithTokenPayload) {
+    const existUser = await this.authService.getUserByEmail(
+      String(user?.email)
+    );
 
     return fillDto(UserRdo, existUser.toPOJO());
   }

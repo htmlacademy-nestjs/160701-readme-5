@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseFilters } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from '../app.config';
 import { Request } from 'express';
@@ -34,6 +34,20 @@ export class UsersController {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Users}/refresh`,
       null,
+      {
+        headers: {
+          Authorization: req.headers['authorization'],
+        },
+      }
+    );
+
+    return data;
+  }
+
+  @Get('info')
+  public async info(@Req() req: Request) {
+    const { data } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Users}/info`,
       {
         headers: {
           Authorization: req.headers['authorization'],

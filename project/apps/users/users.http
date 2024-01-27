@@ -6,7 +6,7 @@
 @parentPath = auth
 @contentType = application/json
 @USER_ID = 65a8be2bf72eba2b50420cf7
-@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1bmRlZmluZWQiLCJlbWFpbCI6IjJAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNTU5NzQxNCwiZXhwIjoxNzA1NTk4MDE0fQ.Gco-MwYhB7jPrPG8LzZCkLS2RopKr6fJwruryWvmnRk
+@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWI1M2M1NjBkNWFiNjUyMjYxODM0ZGYiLCJlbWFpbCI6IjJAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNjM3NzA4OSwiZXhwIjoxNzA2Mzc3MjY5fQ.e45JFebZWxMtOVfK3v14U4NVOerSLse8CYbcrB0tKSo
 @token-refresh =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWIyYTEwOWRjZjJkMjY3NjUwMWIyMTAiLCJlbWFpbCI6IjFAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsInRva2VuSWQiOiIyNDBhM2ZlZS00MTFhLTRiOWQtOGJiNy1lNjQ4YmFmOGJhNzQiLCJpYXQiOjE3MDYyMDU5MTAsImV4cCI6MTcwNjIwNjUxMH0.OXSbWixOEV_RXIqtrZk7cQd-Uw_yqVGazDZvGCmPTm4
 
 
@@ -41,7 +41,7 @@ Authorization: Bearer {{token-refresh}}
 ###
 ## Проверка пользователя
 
-GET {{host}}/{{parentPath}}/{{USER_ID}} HTTP/1.1
+GET {{host}}/{{parentPath}}/info HTTP/1.1
 Authorization: Bearer {{token-access}}
 
 ###
