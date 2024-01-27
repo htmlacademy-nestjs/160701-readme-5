@@ -13,10 +13,13 @@ export class AxiosExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = error.response?.statusText || 'Internal server error';
+    const errorType = error.response?.statusText || 'Internal server error';
+    const data = error.response?.data as { message: string };
+    const message = data?.message;
 
     response.status(status).json({
       statusCode: status,
+      error: errorType,
       message,
     });
   }
