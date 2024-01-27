@@ -53,3 +53,7 @@ export class BlogUserModel extends Document implements AuthUser {
 }
 
 export const BlogUserSchema = SchemaFactory.createForClass(BlogUserModel);
+
+BlogUserSchema.virtual('id').get(function () {
+  return this._id.toString();
+});

@@ -28,3 +28,5 @@ export const attachSwagger = ({
 
   SwaggerModule.setup('spec', app, document, swaggerCustomOptions);
 };
+
+export const AuthKeyName = 'access-token';

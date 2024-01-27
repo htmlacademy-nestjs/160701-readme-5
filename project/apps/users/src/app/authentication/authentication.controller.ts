@@ -11,20 +11,28 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
+import {
+  AuthKeyName,
+  fillDto,
+  generateSchemeApiError,
+} from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
+import { NotifyService } from '../notify/notify.service';
 import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthenticationController {
-  constructor(private readonly authService: AuthenticationService) {}
+  constructor(
+    private readonly authService: AuthenticationService,
+    private readonly notifyService: NotifyService
+  ) {}
 
   @ApiResponse({
     type: UserRdo,
@@ -47,6 +55,13 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+
+    const { email, firstname, id } = newUser;
+    await this.notifyService.registerSubscriber({
+      email,
+      firstname,
+      userId: String(id),
+    });
 
     return fillDto(UserRdo, newUser.toPOJO());
   }
@@ -76,6 +91,7 @@ export class AuthenticationController {
     });
   }
 
+  @ApiBearerAuth(AuthKeyName)
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
@@ -108,13 +124,21 @@ export class AuthenticationController {
     description: 'Bad request data',
     schema: generateSchemeApiError('Bad request data', HttpStatus.BAD_REQUEST),
   })
+  @ApiBearerAuth(AuthKeyName)
   @UseGuards(JwtAuthGuard)
   @Patch('change-password/:id') //TODO получение id из jwt
   public async changePassword(
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto
   ) {
-    await this.authService.changePassword(id, dto);
+    const newUser = await this.authService.changePassword(id, dto);
+    const { email, firstname, id: userId } = newUser.toPOJO();
+
+    await this.notifyService.changePassword({
+      email,
+      firstname,
+      userId: String(userId),
+    });
 
     return fillDto(ChangePasswordRdo, {
       message: 'Password changed successfully',
