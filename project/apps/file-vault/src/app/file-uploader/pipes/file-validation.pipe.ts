@@ -8,12 +8,12 @@ export class FileValidationPipe implements PipeTransform {
     private readonly allowedMimeTypes: string[]
   ) {}
 
-  transform(value: Express.Multer.File) {
-    if (!value) {
+  transform(file: Express.Multer.File) {
+    if (!file) {
       throw new BadRequestException('File is not send.');
     }
-    const { size, mimetype } = value;
-    const fileExtension = extension(mimetype);
+    const { size, mimetype, originalname } = file;
+    const fileExtension = extension(mimetype) || originalname.split('.').pop();
 
     if (!fileExtension || !this.allowedMimeTypes.includes(fileExtension)) {
       throw new BadRequestException('Invalid file format.');
@@ -23,6 +23,6 @@ export class FileValidationPipe implements PipeTransform {
       throw new BadRequestException('File size exceeds the allowed limit.');
     }
 
-    return value;
+    return file;
   }
 }
