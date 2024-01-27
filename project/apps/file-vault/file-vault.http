@@ -1,4 +1,4 @@
-# Пользователь
+# Сервис файлов
 @hostname = http://localhost
 @port = 5555
 @prefix = api/v1

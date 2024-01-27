@@ -1,4 +1,4 @@
-#Комментарии
+## Сервис блога [comments]
 @hostname = http://localhost
 @port = 4444
 @prefix = api/v1
