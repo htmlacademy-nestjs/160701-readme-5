@@ -1,11 +1,11 @@
 # Сервис файлов
 @hostname = http://localhost
-@port = 5555
+@port = 3555
 @prefix = api/v1
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = files
 @contentType = application/json
-@fileId= 65aa94af93035c044aafb8d9
+@fileId= 65b53c90933eee6bddf53198
 
 ### Отправить текстовый файл 
 @avatarFileName= file-uploader.http

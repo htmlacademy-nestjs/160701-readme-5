@@ -1,6 +1,6 @@
 # BFF
 @hostname = http://localhost
-@port = 3000
+@port = 3777
 @prefix = api
 @host = {{hostname}}:{{port}}/{{prefix}}
 @contentType = application/json

@@ -1,6 +1,6 @@
 # Сервис блога [posts]
 @hostname = http://localhost
-@port = 4444
+@port = 3666
 @prefix = api/v1
 @host = {{hostname}}:{{port}}/{{prefix}}
 @parentPath = posts
