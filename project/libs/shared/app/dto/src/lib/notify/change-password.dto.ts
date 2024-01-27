@@ -3,7 +3,7 @@ import {
   EMAIL_NOT_VALID,
   FIRST_NAME_IS_EMPTY,
   USER_ID_IS_EMPTY,
-} from '../create-subscriber/create-subscriber.const';
+} from './create-subscriber.const';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ChangeSubscriberPasswordDto {

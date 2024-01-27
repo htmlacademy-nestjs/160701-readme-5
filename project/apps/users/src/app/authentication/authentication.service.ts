@@ -12,11 +12,6 @@ import {
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthUser, User, UserRole } from '@project/libs/shared/app/types';
-import {
-  AUTH_USER_EXISTS,
-  AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
-  OLD_PASSWORD_NOT_CORRECT,
-} from './authentication.constants';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -25,6 +20,11 @@ import { JWT_ACCESS_KEY, JWT_REFRESH_KEY } from '@project/config/users';
 import { createJWTPayload } from '@project/shared/helpers';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import * as crypto from 'node:crypto';
+import {
+  AUTH_USER_EXISTS,
+  AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
+  OLD_PASSWORD_NOT_CORRECT,
+} from '@project/dto';
 
 @Injectable()
 export class AuthenticationService {
