@@ -5,7 +5,6 @@ import { CheckAuthGuard } from './guards/check-auth.guard';
 import { BlogController } from './controllers/blog.controlller';
 import { FileVaultController } from './controllers/file-vault.controllers';
 import { UsersController } from './controllers/users.controller';
-import { ApiService } from './services/api-service.service';
 
 @Module({
   imports: [
@@ -15,6 +14,6 @@ import { ApiService } from './services/api-service.service';
     }),
   ],
   controllers: [BlogController, FileVaultController, UsersController],
-  providers: [CheckAuthGuard, ApiService],
+  providers: [CheckAuthGuard],
 })
 export class AppModule {}
