@@ -5,7 +5,7 @@
 @host = {{hostname}}:{{port}}/{{prefix}}
 @contentType = application/json
 @USER_ID = 65a8be2bf72eba2b50420cf7
-@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWI1MmFlNWI4Mzg4N2MwOTQ4MGFjZjkiLCJlbWFpbCI6IjFAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNjM3ODQ2MywiZXhwIjoxNzA2Mzc5MDYzfQ.fc4zDTxbyklJFFLMg1091cxuIziKMOn2p_IIWdoPKkM
+@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWI2NWEzNzI1MzEzYzQ2Y2ZmZGE4Y2EiLCJlbWFpbCI6Ijc3N0AyLm5ldCIsInJvbGUiOiJ1c2VyIiwiZmlyc3RuYW1lIjoiSmF5IiwiaWF0IjoxNzA2NDUyNzYwLCJleHAiOjE3MDY0NTMzNjB9.exg6O4e-JstaGkekw7uu9rytL0AKDqQ9CNYI61ZWPTQ
 @token-refresh =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWIyYTEwOWRjZjJkMjY3NjUwMWIyMTAiLCJlbWFpbCI6IjFAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsInRva2VuSWQiOiIyNDBhM2ZlZS00MTFhLTRiOWQtOGJiNy1lNjQ4YmFmOGJhNzQiLCJpYXQiOjE3MDYyMDU5MTAsImV4cCI6MTcwNjIwNjUxMH0.OXSbWixOEV_RXIqtrZk7cQd-Uw_yqVGazDZvGCmPTm4
 
 
@@ -47,13 +47,12 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token-access}}
 
 {
-  "type": "quote",
+  "type": "video",
   "content": {
-    "title": "Мой др 33",
+    "title": "Мой др 30",
     "url": "https://youtu.be/ss9uvs0ujef"
   },
-  "tags": ["hb", "pidor"],
-  "author": "df191215-1f3c-407d-96b2-390bdfae1961"
+  "tags": ["hb", "myday"]
 }
 
 
