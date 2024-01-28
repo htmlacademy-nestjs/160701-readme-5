@@ -77,7 +77,7 @@ export class FileUploaderService {
       const filename = `${randomUUID()}.${fileExtension}`;
       const destinationPath = this.getDestinationFilePath(filename);
       const relativePath = path.relative(uploadDirectoryPath, destinationPath);
-      const fullPath = `localhost:${this.config.port}/${this.config.serveRoot}/${relativePath}`;
+      const fullPath = `http://localhost:${this.config.port}/${this.config.serveRoot}/${relativePath}`;
 
       await ensureDir(join(uploadDirectoryPath, subDirectory));
       await writeFile(destinationPath, file.buffer);
