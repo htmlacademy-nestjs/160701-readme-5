@@ -70,3 +70,23 @@ Content-Type: image/png
 GET  {{host}}/{{parentPath}}/{{fileId}} HTTP/1.1
 
 ###
+
+
+### Отправить дефолтный файл аватара
+@avatarFileName = default-avatar.jpg
+@avatarFieldName = avatar
+###
+POST {{host}}/{{parentPath}}/upload/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{avatarFieldName}}"
+
+JohnDoe
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="{{avatarFieldName}}"; filename="{{avatarFileName}}"
+Content-Type: image/jpg
+
+< ./uploads/{{avatarFileName}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

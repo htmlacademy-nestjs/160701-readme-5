@@ -25,6 +25,7 @@ import {
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
   OLD_PASSWORD_NOT_CORRECT,
 } from '@project/dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthenticationService {
@@ -36,7 +37,8 @@ export class AuthenticationService {
     private readonly jwtAccessService: JwtService,
     @Inject(JWT_REFRESH_KEY)
     private readonly jwtRefreshService: JwtService,
-    private readonly refreshTokenService: RefreshTokenService
+    private readonly refreshTokenService: RefreshTokenService,
+    private readonly configService: ConfigService
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -46,7 +48,7 @@ export class AuthenticationService {
       email,
       firstname,
       role: UserRole.User,
-      avatar: '',
+      avatar: this.configService.get<string>('application.defaultAvatarId'),
       passwordHash: '',
       createdAt: new Date(),
       publicationsCount: 0,

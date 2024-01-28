@@ -9,6 +9,7 @@ type Environment = (typeof ENVIRONMENTS)[number];
 export interface ApplicationConfig {
   environment: string;
   port: number;
+  defaultAvatarId: string;
 }
 
 const validationSchema = Joi.object({
@@ -16,6 +17,7 @@ const validationSchema = Joi.object({
     .valid(...ENVIRONMENTS)
     .required(),
   port: Joi.number().port().default(DEFAULT_PORT),
+  defaultAvatarId: Joi.string(),
 });
 
 function validateConfig(config: ApplicationConfig): void {
@@ -29,6 +31,7 @@ function getConfig(): ApplicationConfig {
   const config: ApplicationConfig = {
     environment: process.env.NODE_ENV as Environment,
     port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
+    defaultAvatarId: process.env.DEFAULT_AVATAR_ID || '',
   };
 
   validateConfig(config);
