@@ -5,6 +5,9 @@ import { Request } from 'express';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { AxiosExceptionFilter } from '../filters/axios-exception.filter';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
+import { UserRdo } from '../rdo/user.rdo';
+import { fillDto } from '@project/shared/helpers';
 
 @Controller('auth')
 @UseFilters(AxiosExceptionFilter)
@@ -13,11 +16,16 @@ export class UsersController {
 
   @Post('register')
   public async register(@Body() dto: CreateUserDto) {
-    const { data } = await this.httpService.axiosRef.post(
+    const { data: user } = await this.httpService.axiosRef.post<UserRdo>(
       `${ApplicationServiceURL.Users}/register`,
       dto
     );
-    return data;
+
+    const { data: file } = await this.httpService.axiosRef.get<UploadedFileRdo>(
+      `${ApplicationServiceURL.FileVault}/${user.avatar}`
+    );
+
+    return fillDto(UserRdo, { ...user, avatar: file.path });
   }
 
   @Post('login')
@@ -46,7 +54,7 @@ export class UsersController {
 
   @Get('info')
   public async info(@Req() req: Request) {
-    const { data } = await this.httpService.axiosRef.get(
+    const { data: user } = await this.httpService.axiosRef.get<UserRdo>(
       `${ApplicationServiceURL.Users}/info`,
       {
         headers: {
@@ -55,6 +63,10 @@ export class UsersController {
       }
     );
 
-    return data;
+    const { data: file } = await this.httpService.axiosRef.get<UploadedFileRdo>(
+      `${ApplicationServiceURL.FileVault}/${user.avatar}`
+    );
+
+    return fillDto(UserRdo, { ...user, avatar: file.path });
   }
 }
