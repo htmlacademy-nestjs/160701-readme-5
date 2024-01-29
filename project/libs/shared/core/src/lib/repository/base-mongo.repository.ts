@@ -14,6 +14,18 @@ export abstract class BaseMongoRepository<
     private readonly createEntity: (document: DocumentType) => EntityType
   ) {}
 
+  public async findAll(): Promise<EntityType[] | null> {
+    const documents = await this.model.find().exec();
+
+    if (!documents || documents.length === 0) return null;
+
+    const entities = documents.map((document) =>
+      this.createEntityFromDocument(document)
+    ) as EntityType[];
+
+    return entities;
+  }
+
   protected createEntityFromDocument(
     document: DocumentType
   ): EntityType | null {
