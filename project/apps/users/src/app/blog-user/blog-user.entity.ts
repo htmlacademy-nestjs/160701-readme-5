@@ -4,7 +4,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './blog-user.constant';
 
 export class BlogUserEntity implements AuthUser, Entity<string> {
-  public id?: string | undefined;
+  public id?: string;
   public firstname!: string;
   public email!: string;
   public role!: UserRole;

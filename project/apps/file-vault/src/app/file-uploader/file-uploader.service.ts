@@ -43,13 +43,15 @@ export class FileUploaderService {
 
   public async saveFile(file: Express.Multer.File): Promise<FileEntity> {
     const storedFile = await this.writeFile(file);
+    const { size, mimetype, originalname } = file;
+
     const fileEntity = FileEntity.fromObject({
       hashName: storedFile.filename,
-      mimetype: file.mimetype,
-      originalName: file.originalname,
       path: storedFile.path,
-      size: file.size,
+      originalName: originalname,
       subDirectory: storedFile.subDirectory,
+      size,
+      mimetype,
     });
 
     return this.fileRepository.save(fileEntity);
@@ -69,10 +71,13 @@ export class FileUploaderService {
     try {
       const uploadDirectoryPath = this.getUploadDirectoryPath();
       const subDirectory = this.getSubUploadDirectoryPath();
-      const fileExtension = String(extension(file.mimetype));
+      const fileExtension = String(
+        extension(file.mimetype) || file.originalname.split('.').pop()
+      );
       const filename = `${randomUUID()}.${fileExtension}`;
       const destinationPath = this.getDestinationFilePath(filename);
       const relativePath = path.relative(uploadDirectoryPath, destinationPath);
+      const fullPath = `http://localhost:${this.config.port}/${this.config.serveRoot}/${relativePath}`;
 
       await ensureDir(join(uploadDirectoryPath, subDirectory));
       await writeFile(destinationPath, file.buffer);
@@ -80,7 +85,7 @@ export class FileUploaderService {
       return {
         fileExtension,
         filename,
-        path: relativePath,
+        path: fullPath,
         subDirectory,
       };
     } catch (error: any) {

@@ -4,9 +4,9 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
@@ -17,14 +17,18 @@ import {
   generateSchemeApiError,
 } from '@project/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
-import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
 import { NotifyService } from '../notify/notify.service';
-import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { RefreshUserRdo } from './rdo/refresh-user.rdo';
+import { RequestWithUser } from '../blog-user/request-with-user.interface';
+import { RequestWithTokenPayload } from '@project/libs/shared/app/types';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -79,16 +83,34 @@ export class AuthenticationController {
       HttpStatus.UNAUTHORIZED
     ),
   })
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const accessToken = await this.authService.createUserToken(verifiedUser);
+  public async login(
+    @Req() { user }: RequestWithUser,
+    @Body() _: LoginUserDto
+  ) {
+    const { accessToken, refreshToken } =
+      await this.authService.createUserToken(user);
 
     return fillDto(LoggedUserRdo, {
-      ...verifiedUser.toPOJO(),
+      ...user.toPOJO(),
       accessToken,
+      refreshToken,
     });
+  }
+
+  @ApiBearerAuth(AuthKeyName)
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: RefreshUserRdo,
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens',
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
   @ApiBearerAuth(AuthKeyName)
@@ -102,9 +124,11 @@ export class AuthenticationController {
     schema: generateSchemeApiError('User not found', HttpStatus.NOT_FOUND),
   })
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  public async show(@Param('id', MongoIdValidationPipe) id: string) {
-    const existUser = await this.authService.getUserById(id);
+  @Get('info')
+  public async show(@Req() { user }: RequestWithTokenPayload) {
+    const existUser = await this.authService.getUserByEmail(
+      String(user?.email)
+    );
 
     return fillDto(UserRdo, existUser.toPOJO());
   }
@@ -126,12 +150,15 @@ export class AuthenticationController {
   })
   @ApiBearerAuth(AuthKeyName)
   @UseGuards(JwtAuthGuard)
-  @Patch('change-password/:id') //TODO получение id из jwt
+  @Patch('change-password')
   public async changePassword(
-    @Param('id', MongoIdValidationPipe) id: string,
+    @Req() { user }: RequestWithTokenPayload,
     @Body() dto: ChangePasswordDto
   ) {
-    const newUser = await this.authService.changePassword(id, dto);
+    const newUser = await this.authService.changePassword(
+      String(user?.sub),
+      dto
+    );
     const { email, firstname, id: userId } = newUser.toPOJO();
 
     await this.notifyService.changePassword({
@@ -143,5 +170,11 @@ export class AuthenticationController {
     return fillDto(ChangePasswordRdo, {
       message: 'Password changed successfully',
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user }: RequestWithTokenPayload) {
+    return user;
   }
 }

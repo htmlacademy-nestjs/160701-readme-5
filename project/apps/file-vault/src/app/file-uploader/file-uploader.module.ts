@@ -20,7 +20,7 @@ import { FileModel, FileSchema } from './file.model';
         return [
           {
             rootPath,
-            serveRoot,
+            serveRoot: `/${serveRoot}`,
             serveStaticOptions: {
               fallthrough: false,
               maxAge: 0,

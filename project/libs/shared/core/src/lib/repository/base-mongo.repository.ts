@@ -20,8 +20,10 @@ export abstract class BaseMongoRepository<
     if (!document) {
       return null;
     }
+    const entity = this.createEntity(document.toObject({ versionKey: false }));
+    entity.id = document._id.toString(); //TODO: норм ли так добавлять id юзера
 
-    return this.createEntity(document.toObject({ versionKey: false }));
+    return entity;
   }
 
   public async findById(id: EntityType['id']): Promise<EntityType | null> {

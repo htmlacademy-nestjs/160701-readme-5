@@ -1,0 +1,64 @@
+# Пользователь
+@hostname = http://localhost
+@port = 3333
+@prefix = api/v1
+@host = {{hostname}}:{{port}}/{{prefix}}
+@parentPath = auth
+@contentType = application/json
+@USER_ID = 65a8be2bf72eba2b50420cf7
+@token-access = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWI1M2M1NjBkNWFiNjUyMjYxODM0ZGYiLCJlbWFpbCI6IjJAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsImlhdCI6MTcwNjQ0MTMzNywiZXhwIjoxNzA2NDQxOTM3fQ.-7refW7zUFOV89jQ7RAy12iz0JYqsn8lXc6kplrBymE
+@token-refresh =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWIyYTEwOWRjZjJkMjY3NjUwMWIyMTAiLCJlbWFpbCI6IjFAMi5uZXQiLCJyb2xlIjoidXNlciIsImZpcnN0bmFtZSI6IkpheSIsInRva2VuSWQiOiIyNDBhM2ZlZS00MTFhLTRiOWQtOGJiNy1lNjQ4YmFmOGJhNzQiLCJpYXQiOjE3MDYyMDU5MTAsImV4cCI6MTcwNjIwNjUxMH0.OXSbWixOEV_RXIqtrZk7cQd-Uw_yqVGazDZvGCmPTm4
+
+
+### Регистрация пользователя
+POST {{host}}/{{parentPath}}/register HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "2@2.net",
+  "firstname": "Jay",
+  "password": "shining"
+}
+
+###
+
+## Авторизовать пользователя
+
+POST {{host}}/{{parentPath}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "2@2.net",
+  "password": "shining"
+}
+
+###
+## Получить новую JWT пару
+
+POST {{host}}/{{parentPath}}/refresh HTTP/1.1
+Authorization: Bearer {{token-refresh}}
+
+###
+## Проверка пользователя
+
+GET {{host}}/{{parentPath}}/info HTTP/1.1
+Authorization: Bearer {{token-access}}
+
+###
+## Изменение пароля пользователя
+PATCH {{host}}/{{parentPath}}/change-password HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{token-access}}
+
+{  
+  "oldPassword": "shining3",
+  "newPassword": "shining2"
+}
+
+###
+
+###
+## Проверка токена
+
+POST {{host}}/{{parentPath}}/check HTTP/1.1
+Authorization: Bearer {{token-access}}
