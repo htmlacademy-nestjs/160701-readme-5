@@ -4,18 +4,14 @@ import { Entity } from '@project/shared/core';
 export class PostEntity implements Post, Entity<string> {
   public id?: string;
   public type!: PostType;
-  public createdAt!: Date;
-  public postedAt!: Date;
+  public createdAt?: Date;
+  public postedAt?: Date;
   public contentId!: string;
   public status!: PostStatus;
   public author!: string;
   public repost!: boolean;
   public repostId?: string;
   public tags?: string[];
-
-  constructor(post: Post) {
-    this.populate(post);
-  }
 
   public toPOJO() {
     return {
@@ -32,7 +28,7 @@ export class PostEntity implements Post, Entity<string> {
     };
   }
 
-  public populate(data: Post): void {
+  public populate(data: Post): PostEntity {
     this.id = data.id;
     this.type = data.type;
     this.author = data.author;
@@ -43,5 +39,11 @@ export class PostEntity implements Post, Entity<string> {
     this.repostId = data.repostId;
     this.status = data.status;
     this.tags = data.tags;
+
+    return this;
+  }
+
+  static fromObject(data: Post): PostEntity {
+    return new PostEntity().populate(data);
   }
 }

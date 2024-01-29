@@ -29,8 +29,6 @@ export class PostsService {
     const post: Post = {
       type: dto.type,
       contentId,
-      createdAt: new Date(),
-      postedAt: new Date(),
       status: PostStatus.Public,
       author: dto.author,
       repost: false,
@@ -40,7 +38,7 @@ export class PostsService {
       dto.type,
       contentId
     );
-    const postEntity = new PostEntity(post);
+    const postEntity = PostEntity.fromObject(post);
     await this.postRepository.save(postEntity);
 
     const fullEntity = {
