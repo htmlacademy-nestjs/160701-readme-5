@@ -37,7 +37,6 @@ async function bootstrap() {
       .addTag('posts', 'Публикации')
       .addTag('likes', 'Лайки')
       .addTag('comments', 'Комментарии')
-      .addTag('files', 'Файлы')
       .addBearerAuth(
         {
           name: 'Authorization',

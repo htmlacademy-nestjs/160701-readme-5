@@ -40,11 +40,12 @@ export class AuthenticationService {
   ) {}
 
   public async register(dto: CreateUserDto) {
-    const { email, firstname, password } = dto;
+    const { email, firstname, password, avatar } = dto;
 
     const blogUser: AuthUser = {
       email,
       firstname,
+      avatar,
       role: UserRole.User,
       passwordHash: '',
       createdAt: new Date(),

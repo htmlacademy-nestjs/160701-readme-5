@@ -31,4 +31,14 @@ export class CreateUserDto {
   @MaxLength(12)
   @IsString()
   public password!: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'User profile picture PNG or JPG file',
+    type: 'string',
+    format: 'binary',
+    enum: ['image/png', 'image/jpeg'],
+    maxLength: 100,
+  })
+  public avatar?: any;
 }

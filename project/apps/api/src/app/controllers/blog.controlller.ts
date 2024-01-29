@@ -51,19 +51,21 @@ export class BlogController {
       data: { ...dto, author: userId },
     });
 
-    const user = await this.apiService.users<UserRdo>({
+    let user = await this.apiService.users<UserRdo>({
       method: 'get',
       endpoint: 'info',
       options: this.apiService.getAuthorizationHeader(req),
     });
 
-    const file = await this.apiService.fileVault<UploadedFileRdo>({
-      method: 'get',
-      endpoint: user.avatar,
-    });
+    if (user.avatar) {
+      const file = await this.apiService.fileVault<UploadedFileRdo>({
+        method: 'get',
+        endpoint: user.avatar,
+      });
 
-    const author = { ...user, avatar: file.path };
+      user.avatar = file.path;
+    }
 
-    return fillDto(PostRdo, { ...post, author });
+    return fillDto(PostRdo, { ...post, author: user });
   }
 }

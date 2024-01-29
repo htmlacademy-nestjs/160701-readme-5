@@ -57,15 +57,11 @@ export class UsersController {
   public async register(
     @Body() dto: CreateUserDto,
     @UploadedFile(
-      new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_IMG_MIMETYPES)
+      new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_IMG_MIMETYPES, true)
     )
     file: Express.Multer.File
   ) {
-    let user = await this.apiService.users<UserRdo>({
-      method: 'post',
-      endpoint: 'register',
-      data: dto,
-    });
+    let avatarId;
 
     if (file) {
       const form = new FormData();
@@ -81,8 +77,14 @@ export class UsersController {
         data: form,
       });
 
-      user.avatar = uploadedFile.path;
+      avatarId = uploadedFile.id;
     }
+
+    let user = await this.apiService.users<UserRdo>({
+      method: 'post',
+      endpoint: 'register',
+      data: { ...dto, avatar: avatarId },
+    });
 
     return fillDto(UserRdo, user);
   }
@@ -129,18 +131,23 @@ export class UsersController {
   @ApiBearerAuth(AuthKeyName)
   @Get('info')
   public async info(@Req() req: Request) {
-    const user = await this.apiService.users<UserRdo>({
+    let user = await this.apiService.users<UserRdo>({
       method: 'get',
       endpoint: 'info',
       options: this.apiService.getAuthorizationHeader(req),
     });
+    console.log(user.avatar);
 
-    const file = await this.apiService.fileVault<UploadedFileRdo>({
-      method: 'get',
-      endpoint: user.avatar,
-    });
+    if (user.avatar) {
+      const file = await this.apiService.fileVault<UploadedFileRdo>({
+        method: 'get',
+        endpoint: user.avatar,
+      });
 
-    return fillDto(UserRdo, { ...user, avatar: file.path });
+      user.avatar = file.path;
+    }
+
+    return fillDto(UserRdo, user);
   }
 
   @ApiResponse({
