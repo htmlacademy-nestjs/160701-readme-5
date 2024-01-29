@@ -6,10 +6,14 @@ import 'multer';
 export class FileValidationPipe implements PipeTransform {
   constructor(
     private readonly maxSize: number,
-    private readonly allowedMimeTypes: string[]
+    private readonly allowedMimeTypes: string[],
+    private readonly isOptional: boolean = false
   ) {}
 
   transform(file: Express.Multer.File) {
+    if (this.isOptional) {
+      return;
+    }
     if (!file) {
       throw new BadRequestException('File is not send.');
     }
