@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/config/blog": ["libs/shared/config/blog/src/index.ts"],
       "@project/config/file-vault": [
         "libs/shared/config/file-vault/src/index.ts"
       ],
