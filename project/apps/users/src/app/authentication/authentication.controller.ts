@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Patch,
   Post,
   Req,
@@ -23,13 +22,13 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangePasswordRdo } from './rdo/change-password.rdo';
 import { NotifyService } from '../notify/notify.service';
-import { MongoIdValidationPipe } from '@project/shared/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RefreshUserRdo } from './rdo/refresh-user.rdo';
 import { RequestWithUser } from '../blog-user/request-with-user.interface';
 import { RequestWithTokenPayload } from '@project/libs/shared/app/types';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -87,7 +86,10 @@ export class AuthenticationController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Req() { user }: RequestWithUser) {
+  public async login(
+    @Req() { user }: RequestWithUser,
+    @Body() _: LoginUserDto
+  ) {
     const { accessToken, refreshToken } =
       await this.authService.createUserToken(user);
 
