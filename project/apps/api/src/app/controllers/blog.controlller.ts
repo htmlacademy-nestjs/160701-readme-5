@@ -34,7 +34,7 @@ export class BlogController {
   @ApiResponse({
     type: PostRdo,
     status: HttpStatus.CREATED,
-    description: 'The new user has been successfully created.',
+    description: 'The new post has been successfully created.',
   })
   @ApiOperation({
     summary: 'Создать пост',

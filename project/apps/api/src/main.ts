@@ -33,6 +33,11 @@ async function bootstrap() {
       .setTitle('The «BFF» service')
       .setDescription('«BFF» service API')
       .setVersion('1.0')
+      .addTag('auth', 'Авторизация и Регистрация')
+      .addTag('posts', 'Публикации')
+      .addTag('likes', 'Лайки')
+      .addTag('comments', 'Комментарии')
+      .addTag('files', 'Файлы')
       .addBearerAuth(
         {
           name: 'Authorization',
