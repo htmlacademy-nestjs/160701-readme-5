@@ -6,8 +6,6 @@ import { Subscriber } from '@project/libs/shared/app/types';
 @Schema({
   collection: 'email-subscribers',
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 })
 export class EmailSubscriberModel extends Document implements Subscriber {
   @Prop({
@@ -30,7 +28,3 @@ export class EmailSubscriberModel extends Document implements Subscriber {
 
 export const EmailSubscriberSchema =
   SchemaFactory.createForClass(EmailSubscriberModel);
-
-EmailSubscriberSchema.virtual('id').get(function () {
-  return this._id.toString();
-});
