@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  HttpStatus,
   Post,
   Req,
   UseFilters,
@@ -13,20 +14,37 @@ import { CheckAuthGuard } from '../guards/check-auth.guard';
 import { UserIdInterceptor } from '../interceptors/userid.interceptor';
 import { PostRdo } from '../rdo/post.rdo';
 import { UserRdo } from '../rdo/user.rdo';
-import { fillDto } from '@project/shared/helpers';
+import { AuthKeyName, fillDto } from '@project/shared/helpers';
 import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
 import { ApiService } from '../service/api.service';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('posts')
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)
 export class BlogController {
   constructor(private readonly apiService: ApiService) {}
 
+  @ApiBearerAuth(AuthKeyName)
+  @ApiResponse({
+    type: PostRdo,
+    status: HttpStatus.CREATED,
+    description: 'The new user has been successfully created.',
+  })
+  @ApiOperation({
+    summary: 'Создать пост',
+  })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UserIdInterceptor)
   @Post('/')
   public async create(@Body() dto: CreatePostApiDto, @Req() req: any) {
     const userId = req['user']['sub'];
+    console.log(userId);
 
     const post = await this.apiService.blog<PostRdo>({
       method: 'post',

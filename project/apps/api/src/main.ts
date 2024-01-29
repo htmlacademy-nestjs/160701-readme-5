@@ -7,10 +7,14 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { attachSwagger } from '@project/shared/helpers';
+import { AuthKeyName, attachSwagger } from '@project/shared/helpers';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { RequestIdInterceptor } from './app/interceptors/request-id.interceptor';
 import { UserIdInterceptor } from './app/interceptors/userid.interceptor';
+import {
+  AllOptionPostContentArray,
+  AllPostContentArray,
+} from '@project/libs/shared/app/types';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,9 +32,22 @@ async function bootstrap() {
     DocumentBuilder: new DocumentBuilder()
       .setTitle('The «BFF» service')
       .setDescription('«BFF» service API')
-      .setVersion('1.0'),
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          name: 'Authorization',
+          bearerFormat: 'Bearer',
+          scheme: 'Bearer',
+          type: 'http',
+          in: 'Header',
+        },
+        AuthKeyName
+      ),
     swaggerCustomOptions: {
       customSiteTitle: '[BFF] Swagger UI',
+    },
+    documentOptions: {
+      extraModels: [...AllPostContentArray, ...AllOptionPostContentArray],
     },
   });
 
