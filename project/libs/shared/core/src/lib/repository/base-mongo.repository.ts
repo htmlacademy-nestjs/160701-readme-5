@@ -14,26 +14,18 @@ export abstract class BaseMongoRepository<
     private readonly createEntity: (document: DocumentType) => EntityType
   ) {}
 
-  public async findAll(): Promise<EntityType[] | null> {
+  public async findAll(): Promise<EntityType[]> {
     const documents = await this.model.find().exec();
-
-    if (!documents || documents.length === 0) return null;
 
     const entities = documents.map((document) =>
       this.createEntityFromDocument(document)
-    ) as EntityType[];
+    );
 
     return entities;
   }
 
-  protected createEntityFromDocument(
-    document: DocumentType
-  ): EntityType | null {
-    if (!document) {
-      return null;
-    }
+  protected createEntityFromDocument(document: DocumentType): EntityType {
     const entity = this.createEntity(document.toObject({ versionKey: false }));
-    entity.id = document._id.toString(); //TODO: норм ли так добавлять id юзера
 
     return entity;
   }
@@ -47,11 +39,13 @@ export abstract class BaseMongoRepository<
   }
 
   public async save(entity: EntityType): Promise<EntityType> {
-    const newEntity = new this.model(entity.toPOJO());
-    await newEntity.save();
+    const model = new this.model(entity.toPOJO());
+    const document = await model.save();
+    const newEntity = this.createEntity(
+      document.toObject({ versionKey: false })
+    );
 
-    entity.id = newEntity._id.toString();
-    return entity;
+    return newEntity;
   }
 
   public async update(
