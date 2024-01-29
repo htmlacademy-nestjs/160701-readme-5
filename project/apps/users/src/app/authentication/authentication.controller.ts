@@ -148,12 +148,15 @@ export class AuthenticationController {
   })
   @ApiBearerAuth(AuthKeyName)
   @UseGuards(JwtAuthGuard)
-  @Patch('change-password/:id') //TODO получение id из jwt
+  @Patch('change-password')
   public async changePassword(
-    @Param('id', MongoIdValidationPipe) id: string,
+    @Req() { user }: RequestWithTokenPayload,
     @Body() dto: ChangePasswordDto
   ) {
-    const newUser = await this.authService.changePassword(id, dto);
+    const newUser = await this.authService.changePassword(
+      String(user?.sub),
+      dto
+    );
     const { email, firstname, id: userId } = newUser.toPOJO();
 
     await this.notifyService.changePassword({

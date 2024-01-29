@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Patch,
   Post,
   Req,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoginUserDto } from '../dto/login-user.dto';
@@ -15,9 +17,12 @@ import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
 import { UserRdo } from '../rdo/user.rdo';
 import { AuthKeyName, fillDto } from '@project/shared/helpers';
 import { ApiService } from '../service/api.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggedUserRdo } from '../rdo/logged-user.rdo';
 import { RefreshUserRdo } from '../rdo/refresh-user.rdo';
+import { ChangePasswordDto } from '../dto/change-password.dto';
+import { ChangePasswordRdo } from '../rdo/change-password.rdo';
+import { CheckAuthGuard } from '../guards/check-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -68,6 +73,7 @@ export class UsersController {
     description: 'Get a new access/refresh tokens',
   })
   @ApiBearerAuth(AuthKeyName)
+  @UseGuards(CheckAuthGuard)
   @Post('refresh')
   public async refreshToken(@Req() req: Request) {
     const data = await this.apiService.users<UserRdo>({
@@ -99,5 +105,23 @@ export class UsersController {
     });
 
     return fillDto(UserRdo, { ...user, avatar: file.path });
+  }
+
+  @ApiResponse({
+    type: ChangePasswordRdo,
+    status: HttpStatus.OK,
+    description: 'Password changed successfully',
+  })
+  @ApiBearerAuth(AuthKeyName)
+  @Patch('change-password')
+  public async changePassword(@Req() req: any, @Body() dto: ChangePasswordDto) {
+    const data = await this.apiService.users<UserRdo>({
+      method: 'patch',
+      endpoint: 'change-password',
+      data: dto,
+      options: this.apiService.getAuthorizationHeader(req),
+    });
+
+    return fillDto(ChangePasswordRdo, data);
   }
 }

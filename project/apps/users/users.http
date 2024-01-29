@@ -15,7 +15,7 @@ POST {{host}}/{{parentPath}}/register HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "email": "27@2.net",
+  "email": "2@2.net",
   "firstname": "Jay",
   "password": "shining"
 }
@@ -46,7 +46,7 @@ Authorization: Bearer {{token-access}}
 
 ###
 ## Изменение пароля пользователя
-PATCH {{host}}/{{parentPath}}/change-password/{{USER_ID}} HTTP/1.1
+PATCH {{host}}/{{parentPath}}/change-password HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: Bearer {{token-access}}
 
