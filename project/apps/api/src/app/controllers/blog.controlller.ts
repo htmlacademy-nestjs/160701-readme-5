@@ -44,7 +44,6 @@ export class BlogController {
   @Post('/')
   public async create(@Body() dto: CreatePostApiDto, @Req() req: any) {
     const userId = req['user']['sub'];
-    console.log(userId);
 
     const post = await this.apiService.blog<PostRdo>({
       method: 'post',
