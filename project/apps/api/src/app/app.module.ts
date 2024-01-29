@@ -3,7 +3,6 @@ import { HttpModule } from '@nestjs/axios';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from './app.config';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { BlogController } from './controllers/blog.controlller';
-import { FileVaultController } from './controllers/file-vault.controllers';
 import { UsersController } from './controllers/users.controller';
 import { ApiService } from './service/api.service';
 
@@ -14,7 +13,7 @@ import { ApiService } from './service/api.service';
       maxRedirects: HTTP_CLIENT_MAX_REDIRECTS,
     }),
   ],
-  controllers: [BlogController, FileVaultController, UsersController],
+  controllers: [BlogController, UsersController],
   providers: [CheckAuthGuard, ApiService],
 })
 export class AppModule {}
