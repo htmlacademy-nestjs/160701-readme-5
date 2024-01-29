@@ -39,10 +39,10 @@ export class PostsService {
       contentId
     );
     const postEntity = PostEntity.fromObject(post);
-    await this.postRepository.save(postEntity);
+    const createdPost = await this.postRepository.save(postEntity);
 
     const fullEntity = {
-      ...postEntity.toPOJO(),
+      ...createdPost.toPOJO(),
       content: contentEntity?.toPOJO(),
     };
 
