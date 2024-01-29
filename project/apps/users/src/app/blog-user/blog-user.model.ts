@@ -9,7 +9,9 @@ import { AuthUser, UserRole } from '@project/libs/shared/app/types';
   toObject: { virtuals: true },
 })
 export class BlogUserModel extends Document implements AuthUser {
-  @Prop()
+  @Prop({
+    default: null,
+  })
   public avatar!: string;
 
   @Prop({
