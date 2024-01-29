@@ -14,7 +14,7 @@ import {
 import { Request } from 'express';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { AxiosExceptionFilter } from '../filters/axios-exception.filter';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDtoWithAvatarFile } from '../dto/create-user.dto';
 import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
 import { UserRdo } from '../rdo/user.rdo';
 import { AuthKeyName, fillDto } from '@project/shared/helpers';
@@ -50,18 +50,18 @@ export class UsersController {
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    type: CreateUserDto,
+    type: CreateUserDtoWithAvatarFile,
   })
   @UseInterceptors(FileInterceptor('avatar'))
   @Post('register')
   public async register(
-    @Body() dto: CreateUserDto,
+    @Body() dto: CreateUserDtoWithAvatarFile,
     @UploadedFile(
       new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_IMG_MIMETYPES, true)
     )
     file: Express.Multer.File
   ) {
-    let avatarId;
+    let uploadedFile;
 
     if (file) {
       const form = new FormData();
@@ -71,22 +71,20 @@ export class UsersController {
         contentType: file.mimetype,
       });
 
-      const uploadedFile = await this.apiService.fileVault<UploadedFileRdo>({
+      uploadedFile = await this.apiService.fileVault<UploadedFileRdo>({
         method: 'post',
         endpoint: 'upload/avatar',
         data: form,
       });
-
-      avatarId = uploadedFile.id;
     }
 
     let user = await this.apiService.users<UserRdo>({
       method: 'post',
       endpoint: 'register',
-      data: { ...dto, avatar: avatarId },
+      data: { ...dto, avatar: uploadedFile?.id },
     });
 
-    return fillDto(UserRdo, user);
+    return fillDto(UserRdo, { ...user, avatar: uploadedFile?.path });
   }
 
   @ApiResponse({

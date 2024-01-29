@@ -40,5 +40,5 @@ export class CreateUserDto {
     enum: ['image/png', 'image/jpeg'],
     maxLength: 100,
   })
-  public avatar?: any;
+  public avatar?: string;
 }
