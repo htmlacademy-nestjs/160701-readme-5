@@ -18,13 +18,9 @@ export class PostsService {
     private readonly basePostContentService: PostContentService
   ) {}
   public async create(dto: CreatePostDto) {
-    const contentId = (
-      await this.basePostContentService.save(dto.type, dto.content)
-    )?.id;
-
-    if (!contentId) {
-      throw new ConflictException('Post content can not created');
-    }
+    const contentId = String(
+      (await this.basePostContentService.save(dto.type, dto.content))?.id
+    );
 
     const post: Post = {
       type: dto.type,
