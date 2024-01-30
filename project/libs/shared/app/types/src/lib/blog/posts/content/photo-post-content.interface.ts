@@ -8,5 +8,5 @@ export class PhotoPostContent extends BasePostContent {
     description: 'Photo image url path',
     example: '/static/image.jpg',
   })
-  path!: string;
+  imageId!: string;
 }
