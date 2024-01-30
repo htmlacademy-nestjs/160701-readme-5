@@ -51,9 +51,6 @@ export class CommentsService {
   }
 
   public async remove(id: string) {
-    await this.findOne(id);
-    await this.commentsRepository.deleteById(id);
-
-    return `This action removes a #${id} comment`;
+    return this.commentsRepository.deleteById(id);
   }
 }

@@ -10,8 +10,10 @@ export class CommentsRepository extends BaseMongoRepository<
   CommentEntity,
   CommentModel
 > {
-  constructor(@InjectModel(CommentModel.name) postModel: Model<CommentModel>) {
-    super(postModel, CommentEntity.fromObject);
+  constructor(
+    @InjectModel(CommentModel.name) commentModel: Model<CommentModel>
+  ) {
+    super(commentModel, CommentEntity.fromObject);
   }
 
   public async findByPostId(postId: string) {
