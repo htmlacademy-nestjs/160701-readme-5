@@ -9,7 +9,7 @@ import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 export class CreatePostDto {
   @ApiProperty({
     description: 'Author id',
-    example: 'df191215-1f3c-407d-96b2-390bdfae1961',
+    example: '65b809b8d6443b043b33eedb',
   })
   @IsNotEmpty()
   @IsString()
@@ -25,7 +25,7 @@ export class CreatePostDto {
 
   @ApiProperty({
     description: 'Post hash tags',
-    example: ['#hash'],
+    example: ['hash'],
   })
   @IsString({ each: true })
   public tags!: string[];
