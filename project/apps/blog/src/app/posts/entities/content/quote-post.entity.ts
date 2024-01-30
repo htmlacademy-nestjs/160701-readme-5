@@ -8,8 +8,8 @@ export class QuotePostContentEntity
   public author!: string;
   public quote!: string;
 
-  constructor(post: QuotePostContent) {
-    super(post);
+  constructor() {
+    super();
   }
 
   public toPOJO() {
@@ -22,9 +22,15 @@ export class QuotePostContentEntity
     };
   }
 
-  public populate(data: QuotePostContent): void {
+  public populate(data: QuotePostContent): QuotePostContentEntity {
     super.populate(data);
     this.author = data.author;
     this.quote = data.quote;
+
+    return this;
+  }
+
+  static fromObject(data: QuotePostContent): QuotePostContentEntity {
+    return new QuotePostContentEntity().populate(data);
   }
 }

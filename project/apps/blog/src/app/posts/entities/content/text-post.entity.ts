@@ -9,8 +9,8 @@ export class TextPostContentEntity
   public title!: string;
   public content!: string;
 
-  constructor(post: TextPostContent) {
-    super(post);
+  constructor() {
+    super();
   }
 
   public toPOJO() {
@@ -24,10 +24,16 @@ export class TextPostContentEntity
     };
   }
 
-  public populate(data: TextPostContent): void {
+  public populate(data: TextPostContent): TextPostContentEntity {
     super.populate(data);
     this.annotation = data.annotation;
     this.title = data.title;
     this.content = data.content;
+
+    return this;
+  }
+
+  static fromObject(data: TextPostContent): TextPostContentEntity {
+    return new TextPostContentEntity().populate(data);
   }
 }

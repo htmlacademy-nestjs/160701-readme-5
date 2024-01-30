@@ -7,8 +7,8 @@ export class PhotoPostContentEntity
 {
   public path!: string;
 
-  constructor(post: PhotoPostContent) {
-    super(post);
+  constructor() {
+    super();
   }
 
   public toPOJO() {
@@ -20,8 +20,14 @@ export class PhotoPostContentEntity
     };
   }
 
-  public populate(data: PhotoPostContent): void {
+  public populate(data: PhotoPostContent): PhotoPostContentEntity {
     super.populate(data);
     this.path = data.path;
+
+    return this;
+  }
+
+  static fromObject(data: PhotoPostContent): PhotoPostContentEntity {
+    return new PhotoPostContentEntity().populate(data);
   }
 }
