@@ -5,7 +5,7 @@ export class PhotoPostContentEntity
   extends BasePostContentEntity
   implements PhotoPostContent
 {
-  public path!: string;
+  public imageId!: string;
 
   constructor() {
     super();
@@ -16,13 +16,13 @@ export class PhotoPostContentEntity
 
     return {
       ...basePOJO,
-      url: this.path,
+      url: this.imageId,
     };
   }
 
   public populate(data: PhotoPostContent): PhotoPostContentEntity {
     super.populate(data);
-    this.path = data.path;
+    this.imageId = data.imageId;
 
     return this;
   }
