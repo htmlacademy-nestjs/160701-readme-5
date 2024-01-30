@@ -39,11 +39,14 @@ export abstract class BaseMongoRepository<
   }
 
   public async save(entity: EntityType): Promise<EntityType> {
-    const newEntity = new this.model(entity.toPOJO());
-    await newEntity.save();
+    const newEntity = await this.model.create(entity.toPOJO());
+    const document = await this.model.findById(newEntity._id).exec();
 
-    entity.id = newEntity._id.toString();
-    return entity;
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
+
+    return this.createEntityFromDocument(document);
   }
 
   public async update(
