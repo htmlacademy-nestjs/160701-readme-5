@@ -1,6 +1,6 @@
 import { BaseMongoRepository } from '@project/shared/core';
 import { PostEntity } from '../entities/post.entity';
-import { PostModel } from '../posts.model';
+import { PostModel } from '../models/posts.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
