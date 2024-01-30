@@ -16,7 +16,7 @@ export class PhotoPostContentEntity
 
     return {
       ...basePOJO,
-      url: this.imageId,
+      imageId: this.imageId,
     };
   }
 

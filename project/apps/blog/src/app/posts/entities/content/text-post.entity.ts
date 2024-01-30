@@ -18,7 +18,7 @@ export class TextPostContentEntity
 
     return {
       ...basePOJO,
-      url: this.annotation,
+      annotation: this.annotation,
       title: this.title,
       content: this.content,
     };

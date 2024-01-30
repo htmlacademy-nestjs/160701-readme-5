@@ -6,19 +6,19 @@ import { TextPostContent } from './text-post-content.interface';
 import { VideoPostContent } from './video-post-content.interface';
 
 export const AllPostContentArray = [
-  LinkPostContent,
+  VideoPostContent,
   PhotoPostContent,
   QuotePostContent,
   TextPostContent,
-  VideoPostContent,
+  LinkPostContent,
 ];
 
 export type PostContent =
+  | VideoPostContent
   | LinkPostContent
   | PhotoPostContent
   | QuotePostContent
-  | TextPostContent
-  | VideoPostContent;
+  | TextPostContent;
 
 export const RefPostContentArray = AllPostContentArray.map((PostTypeClass) => ({
   $ref: getSchemaPath(PostTypeClass),

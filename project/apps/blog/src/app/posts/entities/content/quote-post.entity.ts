@@ -17,7 +17,7 @@ export class QuotePostContentEntity
 
     return {
       ...basePOJO,
-      url: this.author,
+      author: this.author,
       quote: this.quote,
     };
   }
