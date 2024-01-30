@@ -1,7 +1,17 @@
-import { BaseMemoryRepository } from '@project/shared/core';
+import { BaseMongoRepository } from '@project/shared/core';
 import { LikeEntity } from './entities/like.entity';
+import { LikeModel } from './like.model';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
-export class LikesRepository extends BaseMemoryRepository<LikeEntity> {
+export class LikesRepository extends BaseMongoRepository<
+  LikeEntity,
+  LikeModel
+> {
+  constructor(@InjectModel(LikeModel.name) likeModel: Model<LikeModel>) {
+    super(likeModel, LikeEntity.fromObject);
+  }
+
   public async getAllByPostId(postId: string) {
     const entities = await this.findAll();
     const likes = entities.filter((entity) => entity.postId === postId);

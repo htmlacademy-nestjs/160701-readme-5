@@ -10,7 +10,7 @@ import { LikeEntity } from './entities/like.entity';
 export class LikesService {
   constructor(private readonly likesRepository: LikesRepository) {}
 
-  public async getLikes(postId: string) {
+  public async getLikesByPostId(postId: string) {
     const likes = await this.likesRepository.getAllByPostId(postId);
 
     return likes;
@@ -34,14 +34,12 @@ export class LikesService {
       );
     }
 
-    const likeEntity = new LikeEntity({
-      createdAt: new Date(),
+    const likeEntity = new LikeEntity().populate({
       userId,
       postId,
     });
-    const newLike = await this.likesRepository.save(likeEntity);
 
-    return Promise.resolve(newLike);
+    return this.likesRepository.save(likeEntity);
   }
 
   public async deleteLike({
@@ -62,7 +60,7 @@ export class LikesService {
       );
     }
 
-    await this.likesRepository.deleteById(like.id);
+    return this.likesRepository.deleteById(like.id);
   }
 
   public async getAll() {
