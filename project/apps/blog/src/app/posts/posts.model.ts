@@ -5,7 +5,10 @@ import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
 
 @Schema({
   collection: 'posts',
-  timestamps: true,
+  timestamps: {
+    createdAt: 'createdAt',
+    updatedAt: 'postedAt',
+  },
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
 })
@@ -53,7 +56,3 @@ export class PostModel extends Document implements Post {
 }
 
 export const PostSchema = SchemaFactory.createForClass(PostModel);
-
-PostSchema.virtual('id').get(function () {
-  return this._id.toString();
-});

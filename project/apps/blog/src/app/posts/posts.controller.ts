@@ -22,7 +22,7 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @ApiResponse({
-    type: CreatePostDto,
+    type: PostRdo,
     status: HttpStatus.CREATED,
     description: 'Post create successfully',
   })
