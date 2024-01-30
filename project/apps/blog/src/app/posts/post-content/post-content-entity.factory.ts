@@ -27,15 +27,21 @@ export class PostContentEntityFactory implements PostContentEntity {
   public create(type: PostType, content: PostContent) {
     switch (type) {
       case PostType.Video:
-        return new VideoPostContentEntity(content as VideoPostContent); //TODO: remove as
+        return new VideoPostContentEntity().populate(
+          content as VideoPostContent
+        ); //TODO: remove as
       case PostType.Text:
-        return new TextPostContentEntity(content as TextPostContent);
+        return new TextPostContentEntity().populate(content as TextPostContent);
       case PostType.Link:
-        return new LinkPostContentEntity(content as LinkPostContent);
+        return new LinkPostContentEntity().populate(content as LinkPostContent);
       case PostType.Photo:
-        return new PhotoPostContentEntity(content as PhotoPostContent);
+        return new PhotoPostContentEntity().populate(
+          content as PhotoPostContent
+        );
       case PostType.Quote:
-        return new QuotePostContentEntity(content as QuotePostContent);
+        return new QuotePostContentEntity().populate(
+          content as QuotePostContent
+        );
       default:
         throw new NotImplementedException('Not implements post type');
     }
