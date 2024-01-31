@@ -134,7 +134,6 @@ export class UsersController {
       endpoint: 'info',
       options: this.apiService.getAuthorizationHeader(req),
     });
-    console.log(user.avatar);
 
     if (user.avatar) {
       const file = await this.apiService.fileVault<UploadedFileRdo>({
