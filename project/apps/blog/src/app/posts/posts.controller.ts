@@ -30,7 +30,7 @@ export class PostsController {
     summary: 'Создать пост',
   })
   @Post()
-  public async createVideo(@Body() createPostDto: CreatePostDto) {
+  public async create(@Body() createPostDto: CreatePostDto) {
     const post = await this.postsService.create(createPostDto);
 
     return fillDto(PostRdo, post);
@@ -46,7 +46,9 @@ export class PostsController {
   })
   @Get()
   public async findAll() {
-    return this.postsService.findAll();
+    const posts = await this.postsService.findAll();
+
+    return fillDto(PostRdo, posts);
   }
 
   @ApiResponse({
@@ -71,7 +73,7 @@ export class PostsController {
     summary: 'Получить пост по id',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
   }
 
@@ -83,8 +85,13 @@ export class PostsController {
     summary: 'Обновить пост по id',
   })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  public async update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto
+  ) {
+    const post = await this.postsService.update(id, updatePostDto);
+
+    return fillDto(PostRdo, post);
   }
 
   @ApiResponse({
@@ -94,7 +101,7 @@ export class PostsController {
     summary: 'Удалить пост по id',
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }
 }
