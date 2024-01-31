@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import notifyConfig from './notify.config';
-
-const ENV_FILE_PATH = 'apps/notify/notify.env';
+import { mailConfig } from './mail.config';
+import { appConfig, mongoConfig, rabbitConfig } from '@project/config-base';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [notifyConfig],
-      envFilePath: ENV_FILE_PATH,
+      load: [appConfig, rabbitConfig, mongoConfig, mailConfig],
+      envFilePath: 'apps/notify/.env',
     }),
   ],
 })
