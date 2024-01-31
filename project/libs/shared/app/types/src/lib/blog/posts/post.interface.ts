@@ -1,3 +1,4 @@
+import { PostContent } from './content';
 import { PostStatus } from './post-status.enum';
 import { PostType } from './post-type.enum';
 
@@ -8,6 +9,7 @@ export interface Post {
   status: PostStatus;
   type: PostType;
   contentId: string;
+  content?: PostContent;
   author: string;
   repost: boolean;
   repostId?: string;

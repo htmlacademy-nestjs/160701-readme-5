@@ -1,4 +1,9 @@
-import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
+import {
+  Post,
+  PostContent,
+  PostStatus,
+  PostType,
+} from '@project/libs/shared/app/types';
 import { Entity } from '@project/shared/core';
 
 export class PostEntity implements Post, Entity<string> {
@@ -7,6 +12,7 @@ export class PostEntity implements Post, Entity<string> {
   public createdAt?: Date;
   public postedAt?: Date;
   public contentId!: string;
+  public content?: PostContent;
   public status!: PostStatus;
   public author!: string;
   public repost!: boolean;
@@ -19,6 +25,7 @@ export class PostEntity implements Post, Entity<string> {
       type: this.type,
       author: this.author,
       contentId: this.contentId,
+      content: this.content,
       createdAt: this.createdAt,
       postedAt: this.postedAt,
       repost: this.repost,
@@ -33,6 +40,7 @@ export class PostEntity implements Post, Entity<string> {
     this.type = data.type;
     this.author = data.author;
     this.contentId = data.contentId;
+    this.content = data.content;
     this.createdAt = data.createdAt;
     this.postedAt = data.postedAt;
     this.repost = data.repost;
