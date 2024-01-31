@@ -1,10 +1,9 @@
 import 'multer';
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ensureDir } from 'fs-extra';
 import { writeFile } from 'node:fs/promises';
 import path, { join } from 'node:path';
-import { FileVaultConfig } from '@project/config/file-vault';
 import dayjs from 'dayjs';
 import { randomUUID } from 'node:crypto';
 import { extension } from 'mime-types';
@@ -18,13 +17,12 @@ export class FileUploaderService {
   private readonly DATE_FORMAT = 'YYYY/MM/DD';
 
   constructor(
-    @Inject(FileVaultConfig.KEY)
-    private readonly config: ConfigType<typeof FileVaultConfig>,
+    private readonly config: ConfigService,
     private readonly fileRepository: FileRepository
   ) {}
 
   private getUploadDirectoryPath(): string {
-    return this.config.uploadDirectory;
+    return String(this.config.get('application.uploadDirectory'));
   }
 
   private getDestinationFilePath(filename: string): string {
@@ -69,6 +67,8 @@ export class FileUploaderService {
 
   public async writeFile(file: Express.Multer.File): Promise<StoredFile> {
     try {
+      const port = this.config.get('application.port');
+      const serveRoot = this.config.get('application.serveRoot');
       const uploadDirectoryPath = this.getUploadDirectoryPath();
       const subDirectory = this.getSubUploadDirectoryPath();
       const fileExtension = String(
@@ -77,7 +77,7 @@ export class FileUploaderService {
       const filename = `${randomUUID()}.${fileExtension}`;
       const destinationPath = this.getDestinationFilePath(filename);
       const relativePath = path.relative(uploadDirectoryPath, destinationPath);
-      const fullPath = `http://localhost:${this.config.port}/${this.config.serveRoot}/${relativePath}`;
+      const fullPath = `http://localhost:${port}/${serveRoot}/${relativePath}`;
 
       await ensureDir(join(uploadDirectoryPath, subDirectory));
       await writeFile(destinationPath, file.buffer);

@@ -4,6 +4,10 @@ import { NotFoundException } from '@nestjs/common';
 import { Entity, EntityIdType } from './entity.interface';
 import { Repository } from './repository.interface';
 
+const ContentIdPopulate = {
+  path: 'contentId',
+  options: { strictPopulate: false },
+};
 export abstract class BaseMongoRepository<
   EntityType extends Entity<EntityIdType>,
   DocumentType extends Document
@@ -14,32 +18,48 @@ export abstract class BaseMongoRepository<
     private readonly createEntity: (document: DocumentType) => EntityType
   ) {}
 
-  protected createEntityFromDocument(
-    document: DocumentType
-  ): EntityType | null {
-    if (!document) {
-      return null;
-    }
+  public async findAll(): Promise<EntityType[]> {
+    const documents = await this.model
+      .find()
+      .populate(ContentIdPopulate)
+      .exec();
+
+    const entities = documents.map((document) =>
+      this.createEntityFromDocument(document)
+    );
+
+    return entities;
+  }
+
+  protected createEntityFromDocument(document: DocumentType): EntityType {
     const entity = this.createEntity(document.toObject({ versionKey: false }));
-    entity.id = document._id.toString(); //TODO: норм ли так добавлять id юзера
 
     return entity;
   }
 
   public async findById(id: EntityType['id']): Promise<EntityType | null> {
-    const document = await this.model.findById(id).exec();
+    const document = await this.model
+      .findById(id)
+      .populate(ContentIdPopulate)
+      .exec();
 
     if (!document) return null;
 
-    return this.createEntityFromDocument(document);
+    return this.createEntityFromDocument(document as DocumentType);
   }
 
   public async save(entity: EntityType): Promise<EntityType> {
-    const newEntity = new this.model(entity.toPOJO());
-    await newEntity.save();
+    const newEntity = await this.model.create(entity.toPOJO());
+    const document = await this.model
+      .findById(newEntity._id)
+      .populate(ContentIdPopulate)
+      .exec();
 
-    entity.id = newEntity._id.toString();
-    return entity;
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
+
+    return this.createEntityFromDocument(document as DocumentType);
   }
 
   public async update(
@@ -51,6 +71,7 @@ export abstract class BaseMongoRepository<
         new: true,
         runValidators: true,
       })
+      .populate(ContentIdPopulate)
       .exec();
 
     if (!updatedDocument) {
@@ -62,6 +83,7 @@ export abstract class BaseMongoRepository<
 
   public async deleteById(id: EntityType['id']): Promise<void> {
     const deletedDocument = await this.model.findByIdAndDelete(id).exec();
+
     if (!deletedDocument) {
       throw new NotFoundException(`Entity with id ${id} not found.`);
     }

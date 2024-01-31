@@ -1,6 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { BaseMemoryRepository } from '@project/shared/core';
 import { QuotePostContentEntity } from '../../entities/content/quote-post.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { QuotePostContentModel } from '../../models/content/quote-post.model';
+import { Model } from 'mongoose';
+import { BaseMongoRepository } from '@project/shared/core';
 
 @Injectable()
-export class QuotePostRepository extends BaseMemoryRepository<QuotePostContentEntity> {}
+export class QuotePostRepository extends BaseMongoRepository<
+  QuotePostContentEntity,
+  QuotePostContentModel
+> {
+  constructor(
+    @InjectModel(QuotePostContentModel.name)
+    quoteContentModel: Model<QuotePostContentModel>
+  ) {
+    super(quoteContentModel, QuotePostContentEntity.fromObject);
+  }
+}

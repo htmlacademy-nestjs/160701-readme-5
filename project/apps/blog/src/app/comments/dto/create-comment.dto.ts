@@ -9,8 +9,14 @@ export class CreateCommentDto implements Omit<Comment, 'createdAt'> {
   public message!: string;
 
   @ApiProperty({
-    description: 'Comment post id',
-    example: '1c3e0eae-fad2-4beb-9bd8-8baac7aabfff',
+    description: 'Post id',
+    example: '52b7a93fe29bcc5e9410a607',
   })
   public postId!: string;
+
+  @ApiProperty({
+    description: 'User id',
+    example: '65b7a93fe29bcc5e9410a607',
+  })
+  public userId!: string;
 }

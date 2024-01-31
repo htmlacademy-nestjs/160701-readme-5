@@ -6,8 +6,6 @@ import { File } from '@project/libs/shared/app/types';
 @Schema({
   collection: 'files',
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 })
 export class FileModel extends Document implements File {
   @Prop({
@@ -44,7 +42,3 @@ export class FileModel extends Document implements File {
 }
 
 export const FileSchema = SchemaFactory.createForClass(FileModel);
-
-FileSchema.virtual('id').get(function () {
-  return this._id.toString();
-});

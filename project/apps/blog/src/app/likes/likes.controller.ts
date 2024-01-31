@@ -111,11 +111,10 @@ export class LikesController {
   })
   @Get(':postId')
   public async getCount(@Param('postId') postId: string) {
-    const likes = await this.likesService.getLikes(postId);
-
-    return fillDto(
-      LikeRdo,
-      likes.map((like) => like.toPOJO())
+    const likes = (await this.likesService.getLikesByPostId(postId)).map(
+      (like) => like.toPOJO()
     );
+
+    return fillDto(LikeRdo, likes);
   }
 }

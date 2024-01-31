@@ -6,7 +6,7 @@ export class CommentRdo implements Comment {
   @Expose()
   @ApiProperty({
     description: 'The uniq comment ID',
-    example: 'df191215-1f3c-407d-96b2-390bdfae1961',
+    example: '65b809b8d6443b043b33eedb',
   })
   public id!: string;
 
@@ -20,9 +20,16 @@ export class CommentRdo implements Comment {
   @Expose()
   @ApiProperty({
     description: 'The uniq post ID',
-    example: 'df191215-1f3c-407d-96b2-390bdfae1961',
+    example: '65b80a0f61f1dff77ea2da3b',
   })
   public postId!: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The uniq user ID',
+    example: '65b80a917f56bfcfe7cb8729',
+  })
+  public userId!: string;
 
   @Expose()
   @ApiProperty({

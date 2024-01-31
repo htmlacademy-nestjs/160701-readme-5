@@ -8,7 +8,7 @@ import {
 } from '@project/libs/shared/app/types';
 import { Expose } from 'class-transformer';
 
-export class PostRdo implements Omit<Post, 'author'> {
+export class PostRdo implements Omit<Post, 'author' | 'contentId'> {
   @Expose()
   @ApiProperty({
     description: 'The uniq post ID',
@@ -37,13 +37,6 @@ export class PostRdo implements Omit<Post, 'author'> {
     example: '2024-01-11T14:19:59.298Z',
   })
   public postedAt!: Date;
-
-  @Expose()
-  @ApiProperty({
-    description: 'The uniq content ID',
-    example: 'df191215-1f3c-407d-96b2-390bdfae1961',
-  })
-  public contentId!: string;
 
   @Expose()
   @ApiProperty({

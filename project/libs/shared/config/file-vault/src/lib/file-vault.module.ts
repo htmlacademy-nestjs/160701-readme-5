@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import mongoConfig from './mongo.config';
-import fileVaultConfig from './app.config';
-
-const ENV_FILE_PATH = 'apps/file-vault/file-vault.env';
+import { appFileVaultConfig } from './app.config';
+import { mongoConfig } from '@project/config-base';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [fileVaultConfig, mongoConfig],
-      envFilePath: ENV_FILE_PATH,
+      load: [appFileVaultConfig, mongoConfig],
+      envFilePath: 'apps/file-vault/.env',
     }),
   ],
 })

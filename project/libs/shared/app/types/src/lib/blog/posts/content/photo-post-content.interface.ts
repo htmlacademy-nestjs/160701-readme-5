@@ -5,8 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class PhotoPostContent extends BasePostContent {
   @Expose()
   @ApiProperty({
-    description: 'Photo image url path',
-    example: '/static/image.jpg',
+    description: 'Photo image ID',
+    example: '65b809b8d6443b043b33eedb',
   })
-  path!: string;
+  imageId!: string;
 }

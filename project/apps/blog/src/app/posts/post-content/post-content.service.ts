@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostContent, PostType } from '@project/libs/shared/app/types';
 import { PostContentEntityFactory } from './post-content-entity.factory';
 import { PostContentRepositoryFactory } from './post-content-repository.factory';
@@ -42,6 +46,10 @@ export class PostContentService {
 
   public async findById(type: PostType, id: string) {
     const entity = await this.getRepository(type)?.findById(id);
+
+    if (!entity) {
+      throw new NotFoundException(`Post content by id ${id} not found`);
+    }
 
     return entity;
   }

@@ -1,44 +1,18 @@
 import { registerAs } from '@nestjs/config';
-import * as Joi from 'joi';
+import { BaseAppDto, FromEnv, configEnvValidator } from '@project/config-base';
+import { IsString } from 'class-validator';
 
-const DEFAULT_PORT = 5555;
-const ENVIRONMENTS = ['development', 'production', 'stage'] as const;
+class AppDto extends BaseAppDto {
+  @IsString()
+  @FromEnv('UPLOAD_DIRECTORY_PATH')
+  uploadDirectory: string = '/uploads';
 
-type Environment = (typeof ENVIRONMENTS)[number];
-
-export interface FileVaultConfig {
-  environment: string;
-  port: number;
-  uploadDirectory: string;
-  serveRoot: string;
+  @IsString()
+  @FromEnv('SERVE_ROOT')
+  serveRoot: string = '/static';
 }
 
-const validationSchema = Joi.object({
-  environment: Joi.string()
-    .valid(...ENVIRONMENTS)
-    .required(),
-  port: Joi.number().port().default(DEFAULT_PORT),
-  uploadDirectory: Joi.string().required(),
-  serveRoot: Joi.string().required(),
-});
-
-function validateConfig(config: FileVaultConfig): void {
-  const { error } = validationSchema.validate(config, { abortEarly: true });
-  if (error) {
-    throw new Error(`[FileVault Config Validation Error]: ${error.message}`);
-  }
-}
-
-function getConfig(): FileVaultConfig {
-  const config: FileVaultConfig = {
-    environment: process.env.NODE_ENV as Environment,
-    port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
-    uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH || '/uploads',
-    serveRoot: process.env.SERVE_ROOT || '/static',
-  };
-
-  validateConfig(config);
-  return config;
-}
-
-export default registerAs('application', getConfig);
+export const appFileVaultConfig = registerAs(
+  'application',
+  configEnvValidator(AppDto)
+);

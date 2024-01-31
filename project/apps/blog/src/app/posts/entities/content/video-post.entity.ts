@@ -8,8 +8,8 @@ export class VideoPostContentEntity
   public title!: string;
   public url!: string;
 
-  constructor(post: VideoPostContent) {
-    super(post);
+  constructor() {
+    super();
   }
 
   public toPOJO() {
@@ -22,9 +22,15 @@ export class VideoPostContentEntity
     };
   }
 
-  public populate(data: VideoPostContent): void {
+  public populate(data: VideoPostContent): VideoPostContentEntity {
     super.populate(data);
     this.title = data.title;
     this.url = data.url;
+
+    return this;
+  }
+
+  static fromObject(data: VideoPostContent): VideoPostContentEntity {
+    return new VideoPostContentEntity().populate(data);
   }
 }

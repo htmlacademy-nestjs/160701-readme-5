@@ -9,7 +9,7 @@ import { CronModule } from './cron/cron.module';
   imports: [
     CronModule,
     NotifyConfigModule,
-    MongooseModule.forRootAsync(getMongooseOptions('application.db')),
+    MongooseModule.forRootAsync(getMongooseOptions('db')),
     EmailSubscriberModule,
   ],
   controllers: [],

@@ -1,5 +1,7 @@
 export interface Comment {
-  createdAt: Date;
+  id?: string;
+  createdAt?: Date;
   message: string;
   postId: string;
+  userId: string;
 }

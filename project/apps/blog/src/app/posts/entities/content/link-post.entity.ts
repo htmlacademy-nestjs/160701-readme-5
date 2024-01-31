@@ -8,8 +8,8 @@ export class LinkPostContentEntity
   public url!: string;
   public description!: string;
 
-  constructor(post: LinkPostContent) {
-    super(post);
+  constructor() {
+    super();
   }
 
   public toPOJO() {
@@ -22,9 +22,15 @@ export class LinkPostContentEntity
     };
   }
 
-  public populate(data: LinkPostContent): void {
+  public populate(data: LinkPostContent): LinkPostContentEntity {
     super.populate(data);
     this.url = data.url;
     this.description = data.description;
+
+    return this;
+  }
+
+  static fromObject(data: LinkPostContent): LinkPostContentEntity {
+    return new LinkPostContentEntity().populate(data);
   }
 }

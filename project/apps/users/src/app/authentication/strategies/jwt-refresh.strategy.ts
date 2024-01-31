@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ConfigType } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 
 import { AuthenticationService } from '../authentication.service';
 import { jwtConfig } from '@project/config/users';
@@ -15,25 +15,26 @@ export class JwtRefreshStrategy extends PassportStrategy(
   'jwt-refresh'
 ) {
   constructor(
-    @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+    private readonly configService: ConfigService,
     private readonly authService: AuthenticationService,
-    private readonly refreshTokenService: RefreshTokenService,
+    private readonly refreshTokenService: RefreshTokenService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: jwtOptions.refreshTokenSecret,
+      secretOrKey: configService.get<string>('jwt.refreshTokenSecret'),
     });
+
+    console.log('refresh', configService.get<string>('jwt.refreshTokenSecret'));
   }
 
   public async validate(payload: RefreshTokenPayload) {
-    const {tokenId} = payload;
+    const { tokenId } = payload;
 
-    if(!await this.refreshTokenService.isExists(tokenId)){
-      throw new TokenNotExistsException(tokenId)
+    if (!(await this.refreshTokenService.isExists(tokenId))) {
+      throw new TokenNotExistsException(tokenId);
     }
-    await this.refreshTokenService.deleteRefreshSession(tokenId)
-    await this.refreshTokenService.deleteExpiredRefreshTokens()
+    await this.refreshTokenService.deleteRefreshSession(tokenId);
+    await this.refreshTokenService.deleteExpiredRefreshTokens();
 
     return this.authService.getUserById(payload.sub);
   }
