@@ -10,6 +10,7 @@ export interface Post {
   type: PostType;
   contentId: string;
   content?: PostContent;
+  contentType?: string;
   author: string;
   repost: boolean;
   repostId?: string;

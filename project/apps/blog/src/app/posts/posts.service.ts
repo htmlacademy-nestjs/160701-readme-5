@@ -1,15 +1,12 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostRepository } from './repository/post.repository';
 import { PostContentService } from './post-content/post-content.service';
-import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
+import { PostStatus, PostType } from '@project/libs/shared/app/types';
 import { PostEntity } from './entities/post.entity';
 
 import { CreatePostDto } from './dto/create/create-post.dto';
 import { UpdatePostDto } from './dto/update/update-post.dto';
+import { getCurrentContentModel } from './models/content';
 
 @Injectable()
 export class PostsService {
@@ -22,27 +19,17 @@ export class PostsService {
       (await this.basePostContentService.save(dto.type, dto.content))?.id
     );
 
-    const post: Post = {
+    const postEntity = PostEntity.fromObject({
       type: dto.type,
       contentId,
+      contentType: getCurrentContentModel(dto.type),
       status: PostStatus.Public,
       author: dto.author,
       repost: false,
       tags: dto.tags,
-    };
-    const contentEntity = await this.basePostContentService.findById(
-      dto.type,
-      contentId
-    );
-    const postEntity = PostEntity.fromObject(post);
-    const createdPost = await this.postRepository.save(postEntity);
+    });
 
-    const fullEntity = {
-      ...createdPost.toPOJO(),
-      content: contentEntity?.toPOJO(),
-    };
-
-    return fullEntity;
+    return this.postRepository.save(postEntity);
   }
 
   public async findAll() {

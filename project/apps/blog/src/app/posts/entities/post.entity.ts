@@ -13,6 +13,7 @@ export class PostEntity implements Post, Entity<string> {
   public postedAt?: Date;
   public contentId!: string;
   public content?: PostContent;
+  public contentType?: string;
   public status!: PostStatus;
   public author!: string;
   public repost!: boolean;
@@ -26,6 +27,7 @@ export class PostEntity implements Post, Entity<string> {
       author: this.author,
       contentId: this.contentId,
       content: this.content,
+      contentType: this.contentType,
       createdAt: this.createdAt,
       postedAt: this.postedAt,
       repost: this.repost,
@@ -41,6 +43,7 @@ export class PostEntity implements Post, Entity<string> {
     this.author = data.author;
     this.contentId = data.contentId;
     this.content = data.content;
+    this.contentType = data.contentType;
     this.createdAt = data.createdAt;
     this.postedAt = data.postedAt;
     this.repost = data.repost;

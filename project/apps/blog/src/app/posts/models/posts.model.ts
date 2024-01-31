@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
 import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
+import { ContentModels } from './content';
 
 @Schema({
   collection: 'posts',
@@ -11,6 +11,7 @@ import { Post, PostStatus, PostType } from '@project/libs/shared/app/types';
   },
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
+  discriminatorKey: 'contentType',
 })
 export class PostModel extends Document implements Post {
   public id?: string;
@@ -32,8 +33,16 @@ export class PostModel extends Document implements Post {
 
   @Prop({
     required: true,
+    type: () => MongooseSchema.Types.ObjectId,
+    refPath: 'contentType',
   })
   public contentId!: string;
+
+  @Prop({
+    required: true,
+    enum: ContentModels,
+  })
+  public contentType!: string;
 
   @Prop({
     required: true,
@@ -56,3 +65,7 @@ export class PostModel extends Document implements Post {
 }
 
 export const PostSchema = SchemaFactory.createForClass(PostModel);
+
+PostSchema.virtual('content').get(function () {
+  return this.contentId;
+});
