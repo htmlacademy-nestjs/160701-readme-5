@@ -13,7 +13,7 @@ import { getMongooseOptions } from '@project/shared/helpers';
     PostsModule,
     ...[
       BlogConfigModule,
-      MongooseModule.forRootAsync(getMongooseOptions('application.db')),
+      MongooseModule.forRootAsync(getMongooseOptions('db')),
     ],
   ],
   controllers: [],
