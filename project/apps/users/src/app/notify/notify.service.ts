@@ -1,23 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
-import { ConfigType } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { RabbitRouting } from '@project/libs/shared/app/types';
-import { rabbitConfig } from '@project/config/users';
+
 import { ChangeSubscriberPasswordDto } from '@project/dto';
 
 @Injectable()
 export class NotifyService {
   constructor(
     private readonly rabbitClient: AmqpConnection,
-    @Inject(rabbitConfig.KEY)
-    private readonly rabbitOptions: ConfigType<typeof rabbitConfig>
+    private readonly rabbitOptions: ConfigService
   ) {}
 
   public async registerSubscriber(dto: CreateSubscriberDto) {
     return this.rabbitClient.publish<CreateSubscriberDto>(
-      this.rabbitOptions.exchange,
+      String(this.rabbitOptions.get('rabbit.exchange')),
       RabbitRouting.AddSubscriber,
       dto
     );
@@ -25,7 +24,7 @@ export class NotifyService {
 
   public async changePassword(dto: ChangeSubscriberPasswordDto) {
     return this.rabbitClient.publish<ChangeSubscriberPasswordDto>(
-      this.rabbitOptions.exchange,
+      String(this.rabbitOptions.get('rabbit.exchange')),
       RabbitRouting.ChangePassword,
       dto
     );

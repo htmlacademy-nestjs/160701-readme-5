@@ -1,5 +1,5 @@
-export * from './lib/config/users.module';
-export { default as rabbitConfig } from './lib/config/rabbit.config';
-export { default as jwtConfig } from './lib/jwt/jwt.config';
+export * from './lib/users.module';
+
 export * from './lib/jwt/get-jwt-options';
 export * from './lib/jwt/jwt.module';
+export * from './lib/jwt/jwt.config';

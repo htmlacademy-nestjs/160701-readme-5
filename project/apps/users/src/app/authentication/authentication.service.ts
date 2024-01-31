@@ -96,6 +96,11 @@ export class AuthenticationService {
   public async changePassword(id: string, dto: ChangePasswordDto) {
     const { oldPassword, newPassword } = dto;
     const existUser = await this.getUserById(id);
+
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
     const isOldPasswordCorrect = await existUser.comparePassword(oldPassword);
 
     if (!isOldPasswordCorrect) {

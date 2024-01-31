@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { getJwtOptions } from './get-jwt-options';
