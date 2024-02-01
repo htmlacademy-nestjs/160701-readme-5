@@ -1,11 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Comment } from '@project/libs/shared/app/types';
+import { IsString, MinLength, MaxLength } from 'class-validator';
+import { CommentValidator } from '@project/validation';
 
 export class CreateCommentDto implements Omit<Comment, 'createdAt'> {
   @ApiProperty({
     description: 'Comment message',
     example: 'Lorem ipsum',
   })
+  @IsString()
+  @MinLength(CommentValidator.message.Min)
+  @MaxLength(CommentValidator.message.Max)
   public message!: string;
 
   @ApiProperty({

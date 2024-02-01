@@ -36,9 +36,9 @@ import { CheckAuthGuard } from '../guards/check-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FormData from 'form-data';
 import { FileValidationPipe } from '@project/shared/core';
-import { Files } from '@project/shared/core';
+
 import { ChangePasswordDto, LoginUserDto } from '@project/dto';
-const { ALLOWED_IMG_MIMETYPES, FileMaxSize } = Files;
+import { ALLOWED_IMG_MIMETYPES, User } from '@project/validation';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -60,7 +60,11 @@ export class UsersController {
   public async register(
     @Body() dto: CreateUserDtoWithAvatarFile,
     @UploadedFile(
-      new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_IMG_MIMETYPES, true)
+      new FileValidationPipe(
+        User.avatar.FileMaxSize,
+        ALLOWED_IMG_MIMETYPES,
+        true
+      )
     )
     file: Express.Multer.File
   ) {

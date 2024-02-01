@@ -1,24 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '@project/validation';
 import { MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @ApiProperty({
     description: 'User old password',
     example: '123456',
-    minLength: 6,
-    maxLength: 12,
+    minLength: User.password.Min,
+    maxLength: User.password.Max,
   })
-  @MinLength(6)
-  @MaxLength(12)
+  @MinLength(User.password.Min)
+  @MaxLength(User.password.Max)
   public oldPassword!: string;
 
   @ApiProperty({
     description: 'User new password',
     example: 'qwertynew',
-    minLength: 6,
-    maxLength: 12,
+    minLength: User.password.Min,
+    maxLength: User.password.Max,
   })
-  @MinLength(6)
-  @MaxLength(12)
+  @MinLength(User.password.Min)
+  @MaxLength(User.password.Max)
   public newPassword!: string;
 }
