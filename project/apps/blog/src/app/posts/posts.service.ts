@@ -4,7 +4,7 @@ import { PostContentService } from './post-content/post-content.service';
 import { PostStatus, PostType } from '@project/libs/shared/app/types';
 import { PostEntity } from './entities/post.entity';
 
-import { CreatePostDto } from './dto/create/create-post.dto';
+import { CreatePostDto } from '@project/dto';
 import { UpdatePostDto } from './dto/update/update-post.dto';
 import { getCurrentContentModel } from './models/content';
 

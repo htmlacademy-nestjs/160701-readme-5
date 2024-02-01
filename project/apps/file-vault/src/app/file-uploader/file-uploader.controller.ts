@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploaderService } from './file-uploader.service';
 import { MongoIdValidationPipe } from '@project/shared/core';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
-import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
+import { UploadedFileRdo } from '@project/rdo';
 import {
   ApiBody,
   ApiConsumes,
@@ -21,8 +21,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileValidationPipe } from './pipes/file-validation.pipe';
-import { ALLOWED_IMG_MIMETYPES, FileMaxSize } from './file-uploader.constant';
+import { FileValidationPipe } from '@project/shared/core';
+import {
+  ALLOWED_IMG_MIMETYPES,
+  User,
+  PostContentValidator,
+} from '@project/validation';
 
 @ApiTags('files')
 @Controller('files')
@@ -44,7 +48,7 @@ export class FileUploaderController {
         avatar: {
           type: 'string',
           format: 'binary',
-          maxLength: FileMaxSize.Avatar,
+          maxLength: User.avatar.FileMaxSize,
           description: 'PNG or JPG file',
           enum: ['image/png', 'image/jpeg'],
         },
@@ -55,7 +59,7 @@ export class FileUploaderController {
   @UseInterceptors(FileInterceptor('avatar'))
   public async uploadAvatarFile(
     @UploadedFile(
-      new FileValidationPipe(FileMaxSize.Avatar, ALLOWED_IMG_MIMETYPES)
+      new FileValidationPipe(User.avatar.FileMaxSize, ALLOWED_IMG_MIMETYPES)
     )
     file: Express.Multer.File
   ) {
@@ -74,7 +78,7 @@ export class FileUploaderController {
         photo: {
           type: 'string',
           format: 'binary',
-          maxLength: FileMaxSize.PostPhoto,
+          maxLength: PostContentValidator.photo.file.FileMaxSize,
           description: 'PNG or JPG file',
           enum: ['image/png', 'image/jpeg'],
         },
@@ -85,7 +89,10 @@ export class FileUploaderController {
   @UseInterceptors(FileInterceptor('photo'))
   public async uploadPostPhotoFile(
     @UploadedFile(
-      new FileValidationPipe(FileMaxSize.PostPhoto, ALLOWED_IMG_MIMETYPES)
+      new FileValidationPipe(
+        PostContentValidator.photo.file.FileMaxSize,
+        ALLOWED_IMG_MIMETYPES
+      )
     )
     file: Express.Multer.File
   ) {

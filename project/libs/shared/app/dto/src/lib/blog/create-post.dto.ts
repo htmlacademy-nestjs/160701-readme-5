@@ -4,6 +4,7 @@ import {
   PostType,
   RefPostContentArray,
 } from '@project/libs/shared/app/types';
+import { Post } from '@project/validation';
 
 import {
   ArrayMaxSize,
@@ -43,12 +44,12 @@ export class CreatePostDto {
   })
   @IsOptional()
   @IsArray()
-  @ArrayMaxSize(8)
+  @ArrayMaxSize(Post.tags.MaxSize)
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
-  @MinLength(3, { each: true })
-  @MaxLength(10, { each: true })
-  @Matches(/^[a-zA-Zа-яА-Я][a-zA-Z0-9_#]{2,9}$/, {
+  @MinLength(Post.tags.MinLength, { each: true })
+  @MaxLength(Post.tags.MaxLength, { each: true })
+  @Matches(Post.tags.Matches, {
     each: true,
     message:
       'tag must start with a letter and can only contain letters, numbers, underscores and pound.',

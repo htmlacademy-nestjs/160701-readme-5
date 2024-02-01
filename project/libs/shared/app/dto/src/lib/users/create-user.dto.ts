@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 import { AUTH_USER_EMAIL_NOT_VALID } from './authentication.constants';
+import { User } from '@project/validation';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -13,22 +14,22 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User first name',
     example: 'Keks',
-    minLength: 3,
-    maxLength: 50,
+    minLength: User.firstname.Min,
+    maxLength: User.firstname.Max,
   })
-  @MinLength(3)
-  @MaxLength(50)
+  @MinLength(User.firstname.Min)
+  @MaxLength(User.firstname.Max)
   @IsString()
   public firstname!: string;
 
   @ApiProperty({
     description: 'User password',
     example: '123456',
-    minLength: 6,
-    maxLength: 12,
+    minLength: User.password.Min,
+    maxLength: User.password.Max,
   })
-  @MinLength(6)
-  @MaxLength(12)
+  @MinLength(User.password.Min)
+  @MaxLength(User.password.Max)
   @IsString()
   public password!: string;
 
@@ -37,8 +38,8 @@ export class CreateUserDto {
     description: 'User profile picture PNG or JPG file',
     type: 'string',
     format: 'binary',
-    enum: ['image/png', 'image/jpeg'],
-    maxLength: 100,
+    enum: User.avatar.Type,
+    maxLength: User.avatar.FileMaxSize,
   })
   public avatar?: string;
 }

@@ -2,10 +2,9 @@ import { Controller } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 
 import { EmailSubscriberService } from './email-subscriber.service';
-import { CreateSubscriberDto } from './dto/create-subscriber.dto';
+import { CreateSubscriberDto, ChangeSubscriberPasswordDto } from '@project/dto';
 import { RabbitRouting } from '@project/libs/shared/app/types';
 import { MailService } from '../mail/mail.service';
-import { ChangeSubscriberPasswordDto } from './dto/change-subscriber-password.dto';
 
 @Controller()
 export class EmailSubscriberController {

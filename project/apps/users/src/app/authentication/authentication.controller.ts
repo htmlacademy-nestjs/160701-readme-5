@@ -10,25 +10,29 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, ChangePasswordDto, LoginUserDto } from '@project/dto';
 import {
   AuthKeyName,
   fillDto,
   generateSchemeApiError,
 } from '@project/shared/helpers';
-import { UserRdo } from './rdo/user.rdo';
-import { LoggedUserRdo } from './rdo/logged-user.rdo';
+
+import {
+  UserRdo,
+  LoggedUserRdo,
+  ChangePasswordRdo,
+  RefreshUserRdo,
+} from '@project/rdo';
+
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { ChangePasswordRdo } from './rdo/change-password.rdo';
+
 import { NotifyService } from '../notify/notify.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import { RefreshUserRdo } from './rdo/refresh-user.rdo';
+
 import { RequestWithUser } from '../blog-user/request-with-user.interface';
 import { RequestWithTokenPayload } from '@project/libs/shared/app/types';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')

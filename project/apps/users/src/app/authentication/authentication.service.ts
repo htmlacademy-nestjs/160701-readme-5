@@ -10,11 +10,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
-import { CreateUserDto } from './dto/create-user.dto';
 import { AuthUser, User, UserRole } from '@project/libs/shared/app/types';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
-import { LoginUserDto } from './dto/login-user.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_ACCESS_KEY, JWT_REFRESH_KEY } from '@project/config/users';
 import { createJWTPayload } from '@project/shared/helpers';
@@ -24,6 +21,9 @@ import {
   AUTH_USER_EXISTS,
   AUTH_USER_NOT_FOUND_OR_PASSWORD_WRONG,
   OLD_PASSWORD_NOT_CORRECT,
+  CreateUserDto,
+  LoginUserDto,
+  ChangePasswordDto,
 } from '@project/dto';
 
 @Injectable()

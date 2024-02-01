@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Query,
-  Res,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';

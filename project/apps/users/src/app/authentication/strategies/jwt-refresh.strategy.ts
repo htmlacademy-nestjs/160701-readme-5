@@ -23,8 +23,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get<string>('jwt.refreshTokenSecret'),
     });
-
-    console.log('refresh', configService.get<string>('jwt.refreshTokenSecret'));
   }
 
   public async validate(payload: RefreshTokenPayload) {

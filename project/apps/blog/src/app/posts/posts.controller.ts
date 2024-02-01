@@ -13,7 +13,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
 import { PostTypesRdo } from './rdo/post-types.rdo';
 import { PostRdo } from './rdo/post.rdo';
-import { CreatePostDto } from './dto/create/create-post.dto';
+import { CreatePostDto } from '@project/dto';
 import { UpdatePostDto } from './dto/update/update-post.dto';
 
 @ApiTags('posts')
