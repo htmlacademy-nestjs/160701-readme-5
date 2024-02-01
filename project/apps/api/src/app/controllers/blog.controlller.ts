@@ -12,10 +12,8 @@ import { AxiosExceptionFilter } from '../filters/axios-exception.filter';
 import { CreatePostApiDto } from '../dto/create-post.dto';
 import { CheckAuthGuard } from '../guards/check-auth.guard';
 import { UserIdInterceptor } from '../interceptors/userid.interceptor';
-import { PostRdo } from '../rdo/post.rdo';
-import { UserRdo } from '../rdo/user.rdo';
 import { AuthKeyName, fillDto } from '@project/shared/helpers';
-import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
+import { UploadedFileRdo, PostRdo, UserRdo } from '@project/rdo';
 import { ApiService } from '../service/api.service';
 import {
   ApiBearerAuth,

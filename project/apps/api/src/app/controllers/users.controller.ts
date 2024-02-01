@@ -12,11 +12,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { LoginUserDto } from '../dto/login-user.dto';
 import { AxiosExceptionFilter } from '../filters/axios-exception.filter';
 import { CreateUserDtoWithAvatarFile } from '../dto/create-user.dto';
-import { UploadedFileRdo } from '../rdo/uploaded-file.rdo';
-import { UserRdo } from '../rdo/user.rdo';
+import {
+  UploadedFileRdo,
+  LoggedUserRdo,
+  RefreshUserRdo,
+  ChangePasswordRdo,
+  UserRdo,
+} from '@project/rdo';
+
 import { AuthKeyName, fillDto } from '@project/shared/helpers';
 import { ApiService } from '../service/api.service';
 import {
@@ -26,15 +31,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { LoggedUserRdo } from '../rdo/logged-user.rdo';
-import { RefreshUserRdo } from '../rdo/refresh-user.rdo';
-import { ChangePasswordDto } from '../dto/change-password.dto';
-import { ChangePasswordRdo } from '../rdo/change-password.rdo';
+
 import { CheckAuthGuard } from '../guards/check-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FormData from 'form-data';
 import { FileValidationPipe } from '@project/shared/core';
 import { Files } from '@project/shared/core';
+import { ChangePasswordDto, LoginUserDto } from '@project/dto';
 const { ALLOWED_IMG_MIMETYPES, FileMaxSize } = Files;
 
 @ApiTags('auth')
