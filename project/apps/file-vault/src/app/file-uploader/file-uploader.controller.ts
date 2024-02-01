@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploaderService } from './file-uploader.service';
 import { MongoIdValidationPipe } from '@project/shared/core';
 import { fillDto, generateSchemeApiError } from '@project/shared/helpers';
-import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
+import { UploadedFileRdo } from '@project/rdo';
 import {
   ApiBody,
   ApiConsumes,
