@@ -21,7 +21,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileValidationPipe } from './pipes/file-validation.pipe';
+import { FileValidationPipe } from '@project/shared/core';
 import { ALLOWED_IMG_MIMETYPES, FileMaxSize } from './file-uploader.constant';
 
 @ApiTags('files')
