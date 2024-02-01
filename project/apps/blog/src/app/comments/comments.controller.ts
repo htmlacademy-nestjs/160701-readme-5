@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  NotFoundException,
   HttpStatus,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
