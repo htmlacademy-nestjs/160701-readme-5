@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@project/config/api": ["libs/shared/config/api/src/index.ts"],
       "@project/config-base": ["libs/shared/config/base/src/index.ts"],
+      "@project/config/api": ["libs/shared/config/api/src/index.ts"],
       "@project/config/blog": ["libs/shared/config/blog/src/index.ts"],
       "@project/config/file-vault": [
         "libs/shared/config/file-vault/src/index.ts"
@@ -27,7 +27,8 @@
       "@project/libs/shared/app/types": ["libs/shared/app/types/src/index.ts"],
       "@project/rdo": ["libs/shared/app/rdo/src/index.ts"],
       "@project/shared/core": ["libs/shared/core/src/index.ts"],
-      "@project/shared/helpers": ["libs/shared/helpers/src/index.ts"]
+      "@project/shared/helpers": ["libs/shared/helpers/src/index.ts"],
+      "@project/validation": ["libs/shared/app/validation/src/index.ts"]
     },
     "strict": true
   },
